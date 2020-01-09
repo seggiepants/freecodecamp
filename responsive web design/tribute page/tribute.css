@@ -1,0 +1,30 @@
+body {
+  background: linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)), url('https://upload.wikimedia.org/wikipedia/en/e/ed/Fantasticfour72.jpg');
+  color: #dddddd;
+}
+
+#title {
+  text-align: center;
+}
+
+#img-caption {
+  text-align: center;
+  color: rgb(128, 128, 128);
+  display: block;
+  margin: 0 auto;
+  padding: 20px 0px 0px 0px;  
+}
+
+#tribute-link {
+  font-size: 150%;
+}
+
+/* Can't style #image, has to be img or the test fails */
+img {
+  max-width: 100%;
+  display: block;
+  height: auto;
+  text-align: center;
+  margin: 0 auto;
+  box-shadow: 0 10px 20px rgba(255,255,255,0.19), 0 6px 6px rgba(255,255,255,0.23);
+}
