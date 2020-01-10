@@ -1,0 +1,18 @@
+body {
+  background-color: #cccc99;
+  font-family: "Courier", monospaced;
+}
+.form-row {
+  display: flex;
+}
+
+.text-you-speak {
+  color: white;
+  background-color: black;
+  margin: 5px;
+}
+
+.extra {
+  padding-left: 32px;
+  padding-top: 8px;
+}

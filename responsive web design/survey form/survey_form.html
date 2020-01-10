@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+  <head>
+	<title>FCC Survey Form</title>
+	<link rel="stylesheet" type="text/css" href="survey_form.css">
+	<script src="survey_form.js"></script>
+  </head>
+  <body>
+    <h1 id="title">Survey Form</h1>
+    <p id="description">This is a short survey form somewhat inspired by the <a href="https://egbg.home.xs4all.nl/counterscript.html">EGBG Telemarketer Counter-Script</a>.
+    </p>
+    <form id="survey-form">
+      <div class="form-row"><label id="name-label" for="name" class="text-you-speak">To whom am I speaking?</label>
+      <input type="text" id="name" placeholder="Could you spell your name for me?" size="100" required>
+      </div>
+      <div class="form-row"><label id="how-found-label" for="how-found" class="text-you-speak">Could you tell me how you found this phone number? </label>
+      <input type="text" id="how-found" placeholder="Oh, that way" size="100" required>
+      </div>
+      <div>
+        <span class="text-you-speak">And is this your full time job?</span>
+        <label for="full-time">
+          <input type="radio" id="full-time" name="is-full-time" value="full-time">
+          full-time</label>
+        <label for="part-time">
+          <input type="radio" id="part-time" name="is-full-time" value="part-time">
+          part-time</label>
+      </div>
+      <div id="part-time-extra" class="extra">
+        <span class="text-you-speak">What else do you do for a living? </span>
+        <label for="house-wife">
+          <input type="radio" id="house-wife" name="second-job" value="house-wife">
+          I am a housewife/houseman</label>
+        <label for="study">
+          <input type="radio" id="study" name="second-job" value="study">
+          I study</label>
+        <label for="other-job">
+          <input type="radio" id="other-job" name="second-job" value="other-job">
+          I have another job</label>
+      </div>
+      <div id="housewife-extra" class="extra">
+        <span class="text-you-speak">That's funny, my neighbor does the same thing </span>
+      </div>
+      <div id="study-extra" class="extra">
+        <label for="study-text" class="text-you-speak">Nice, what do you study? <input type=text id="study-text"></label>
+      </div>
+      <div id="other-job-extra" class="extra">
+        <label for="other-job-text" class="text-you-speak">Nice, what exactly? <input type=text id="other-job-text"></label>
+      </div>
+      <div>
+      <label id="email-label" for="email">Thank you for your information. Would you mind giving me your email in case I need more information? </label>
+      <input type="email" id="email" required placeholder="user@example.com">
+      </div>
+      <div class="form-row">
+      <label for="number" id="number-label">How much do you earn?</label>
+      <select id="dropdown">
+        <option value="Dollars" selected>$</option>
+        <option value="Euros">&euro;</option>
+        <option value="Pounds">&pound;</option>
+      <select>
+      <input type="number" id="number" min="1" max="100000" placeholder="telemarketer's wages"> per 
+        <label for="hour">
+          <input type="radio" id="hour" name="unit_per" value="hour">
+          hour</label>
+        <label for="hour">
+          <input type="radio" id="week" name="unit_per" value="hour">
+          week</label>
+        <label for="hour">
+          <input type="radio" id="month" name="unit_per" value="hour">
+          month</label>
+        <label for="hour">
+          <input type="radio" id="conversation" name="unit_per" value="hour">
+          conversation</label>
+        </div>
+       Which toothpaste would you recommend?
+        <label for="aquafresh"><input id="aquafresh" type="checkbox" name="toothpaste" value="aquafresh"> Aquafresh</label>
+        <label for="arm_and_hammer"><input id="arm_and_hammer" type="checkbox" name="toothpaste" value="arm_and_hammer"> Arm &amp; Hammer</label>
+        <label for="colgate"><input id="colgate" type="checkbox" name="toothpaste" value="colgate"> Colgate</label>
+        <label for="crest"><input id="crest" type="checkbox" name="toothpaste" value="crest"> Crest</label>
+        <label for="crest"><input id="pepsodent" type="checkbox" name="pepsodent" value="pepsodent"> Pepsodent</label>
+        <label for="sensodyne"><input id="sensodyne" type="checkbox" name="toothpaste" value="sensodyne"> Sensodyne</label>
+        <label for="other_toothpaste"><input id="other_toothpaste" type="checkbox" name="toothpaste" value="other_toothpaste"> Other:</label><input type="text" id="toothpaste_brand" placeholder="Enter brand of toothpaste when &quot;Other&quot; is selected">
+        Comments:
+        <textarea id="comments" placeholder="Enter comments"></textarea>
+        <button type="submit" id="submit">Submit</button>
+    </form>
+  </body>
+</html>
