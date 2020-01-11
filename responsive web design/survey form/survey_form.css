@@ -16,3 +16,11 @@ body {
   padding-left: 32px;
   padding-top: 8px;
 }
+
+.hidden>div {
+  display: none;
+}
+
+.visible>div {
+  display: block;
+}

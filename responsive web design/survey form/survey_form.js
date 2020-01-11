@@ -1,27 +1,53 @@
-// !! IMPORTANT README:
+function dostuff() {
+  alert('stuff');
+  return false;
+}
 
-// You may add additional external JS and CSS as needed to complete the project, however the current external resource MUST remain in place for the tests to work. BABEL must also be left in place. 
+function fullTimePartTime() {
+  partTimeExtra = document.getElementById("part-time-extra");
+  if (document.getElementById("part-time").checked) {
+    partTimeExtra.style.display = "block";
+    whatElseDoYouDoForALiving();
+  } else {
+    partTimeExtra.style.display = "none";
+  } 
+}
 
-/***********
-INSTRUCTIONS:
-  - Select the project you would 
-    like to complete from the dropdown 
-    menu.
-  - Click the "RUN TESTS" button to
-    run the tests against the blank 
-    pen.
-  - Click the "TESTS" button to see 
-    the individual test cases. 
-    (should all be failing at first)
-  - Start coding! As you fulfill each
-    test case, you will see them go   
-    from red to green.
-  - As you start to build out your 
-    project, when tests are failing, 
-    you should get helpful errors 
-    along the way!
-    ************/
+function whatElseDoYouDoForALiving() {
+  document.getElementById("house-wife-extra").style.display = 
+    document.getElementById("house-wife").checked ? "block" : "none";
 
-// PLEASE NOTE: Adding global style rules using the * selector, or by adding rules to body {..} or html {..}, or to all elements within body or html, i.e. h1 {..}, has the potential to pollute the test suite's CSS. Try adding: * { color: red }, for a quick example!
+  document.getElementById("study-extra").style.display = 
+    document.getElementById("study").checked ? "block" : "none";
 
-// Once you have read the above messages, you can delete all comments. 
+  document.getElementById("other-job-extra").style.display = 
+    document.getElementById("other-job").checked ? "block" : "none";
+
+}
+
+function sameResidence() {
+  document.getElementById("same-residence-no-extra").style.display = 
+    document.getElementById("same-residence-no").checked ? "block" : "none";
+}
+
+function jobLength() {
+  document.getElementById("zero-to-five-months-extra").style.display = 
+    document.getElementById("zero-to-five-months").checked ? "block" : "none";
+
+  document.getElementById("over-five-months-extra").style.display = 
+    document.getElementById("over-five-months").checked ? "block" : "none";
+}
+
+function otherToothpaste() {
+  document.getElementById("toothpaste-brand").style.display = 
+    document.getElementById("other-toothpaste").checked ? "block" : "none";
+}
+
+function init() {
+  // Set initial form state.
+  fullTimePartTime();
+  whatElseDoYouDoForALiving();
+  sameResidence();
+  jobLength();
+  otherToothpaste();
+}

@@ -7,48 +7,88 @@
   </head>
   <body>
     <h1 id="title">Survey Form</h1>
-    <p id="description">This is a short survey form somewhat inspired by the <a href="https://egbg.home.xs4all.nl/counterscript.html">EGBG Telemarketer Counter-Script</a>.
+    <p id="description">This is a short survey form modeled after the <a href="https://egbg.home.xs4all.nl/counterscript.html">EGBG Telemarketer Counter-Script</a>.
     </p>
-    <form id="survey-form">
-      <div class="form-row"><label id="name-label" for="name" class="text-you-speak">To whom am I speaking?</label>
-      <input type="text" id="name" placeholder="Could you spell your name for me?" size="100" required>
+    <form id="survey-form" onSubmit="return dostuff()">
+      <div class="form-row"><label id="name-label" for="name" class="text-you-speak">To whom am I speaking? Could you spell your name for me?</label>
+      <input type="text" id="name" placeholder="Telemarketer&apos; name" size="100" required>
       </div>
       <div class="form-row"><label id="how-found-label" for="how-found" class="text-you-speak">Could you tell me how you found this phone number? </label>
-      <input type="text" id="how-found" placeholder="Oh, that way" size="100" required>
+      <input type="text" id="how-found" placeholder="How they got your number." size="100" required>
+      <span class="text-you-speak">Oh, that way</span>
       </div>
       <div>
         <span class="text-you-speak">And is this your full time job?</span>
-        <label for="full-time">
-          <input type="radio" id="full-time" name="is-full-time" value="full-time">
-          full-time</label>
-        <label for="part-time">
-          <input type="radio" id="part-time" name="is-full-time" value="part-time">
-          part-time</label>
+        <fieldset>
+          <label for="full-time">
+            <input type="radio" id="full-time" name="is-full-time" value="full-time" onClick="fullTimePartTime()">
+            full-time</label>
+          <label for="part-time">
+            <input type="radio" id="part-time" name="is-full-time" value="part-time" onClick="fullTimePartTime()">
+            part-time</label>
+        </fieldset>
       </div>
       <div id="part-time-extra" class="extra">
-        <span class="text-you-speak">What else do you do for a living? </span>
-        <label for="house-wife">
-          <input type="radio" id="house-wife" name="second-job" value="house-wife">
-          I am a housewife/houseman</label>
-        <label for="study">
-          <input type="radio" id="study" name="second-job" value="study">
-          I study</label>
-        <label for="other-job">
-          <input type="radio" id="other-job" name="second-job" value="other-job">
-          I have another job</label>
-      </div>
-      <div id="housewife-extra" class="extra">
-        <span class="text-you-speak">That's funny, my neighbor does the same thing </span>
-      </div>
-      <div id="study-extra" class="extra">
-        <label for="study-text" class="text-you-speak">Nice, what do you study? <input type=text id="study-text"></label>
-      </div>
-      <div id="other-job-extra" class="extra">
-        <label for="other-job-text" class="text-you-speak">Nice, what exactly? <input type=text id="other-job-text"></label>
+        <label for="job"><span class="text-you-speak">What else do you do for a living?</span>&nbsp;
+        <fieldset id="job">
+          <label for="house-wife">
+            <input type="radio" id="house-wife" name="second-job" value="house-wife" onClick="whatElseDoYouDoForALiving()">
+            I am a housewife/houseman</label>
+          <label for="study">
+            <input type="radio" id="study" name="second-job" value="study" onClick="whatElseDoYouDoForALiving()">
+            I study</label>
+          <label for="other-job">
+            <input type="radio" id="other-job" name="second-job" value="other-job" onClick="whatElseDoYouDoForALiving()">
+            I have another job</label>        
+          <div id="house-wife-extra" class="extra">
+            <span class="text-you-speak">That's funny, my neighbor does the same thing</span>
+          </div>
+          <div id="study-extra" class="extra">
+            <label for="study-text"><span class="text-you-speak">Nice, what do you study?</span>&nbsp;<input type="text" id="study-text" size="50" placeholder="study major"></label>
+          </div>
+          <div id="other-job-extra" class="extra">
+            <label for="other-job-text"><span class="text-you-speak">Nice, what exactly?</span>&nbsp;<input type="text" id="other-job-text" size="50" placeholder="other job"></label>
+          </div>
+        </fieldset>
+        </label>
       </div>
       <div>
-      <label id="email-label" for="email">Thank you for your information. Would you mind giving me your email in case I need more information? </label>
-      <input type="email" id="email" required placeholder="user@example.com">
+        <label for="same-residence-group"><span class="text-you-speak">Do you also live in ...? (add your place of residence)</span>&nbsp;
+        <fieldset id="same-residence-group">
+          <label for="same-residence-yes">
+            <input type="radio" id="same-residence-yes" name="same-residence" value="yes" onClick="sameResidence()">
+            Yes
+          </label>
+          <label for="same-residence-no">
+            <input type="radio" id="same-residence-no" name="same-residence" value="no" onClick="sameResidence()">
+            No
+          </label>
+          <div id="same-residence-no-extra" class="extra">
+            <label for="same-residence-other">in <input type="text" id="same-residence-other" size="50" placeholder="telemarketer&apos;s neighborhood"></label>
+            <span class="text-you-speak">Oh, that&apos;s nice as well</span>
+          </div>
+        </fieldset>
+        </label>
+      </div>
+      <div>
+        <label for="job-length-group"><span class="text-you-speak">And how long have you been in telemarketing business?</span>&nbsp;
+        <fieldset id="job-length-group">
+          <label for="zero-to-five-months">
+            <input type="radio" id="zero-to-five-months" name="job-length" value="short" onClick="jobLength()">
+            0-5 months
+          </label>
+          <label for="over-five-months">
+            <input type="radio" id="over-five-months" name="job-length" value="long" onClick="jobLength()">
+            &gt; 5 months
+          </label>
+          <div id="zero-to-five-months-extra" class="extra">
+            <span class="text-you-speak">That&apos;s not very long</span>
+          </div>
+          <div id="over-five-months-extra" class="extra">
+            <span class="text-you-speak">That&apos;s quite long</span>
+          </div>
+        </fieldset>
+        </label>
       </div>
       <div class="form-row">
       <label for="number" id="number-label">How much do you earn?</label>
@@ -59,29 +99,39 @@
       <select>
       <input type="number" id="number" min="1" max="100000" placeholder="telemarketer's wages"> per 
         <label for="hour">
-          <input type="radio" id="hour" name="unit_per" value="hour">
+          <input type="radio" id="hour" name="unit-per" value="hour">
           hour</label>
         <label for="hour">
-          <input type="radio" id="week" name="unit_per" value="hour">
+          <input type="radio" id="week" name="unit-per" value="hour">
           week</label>
         <label for="hour">
-          <input type="radio" id="month" name="unit_per" value="hour">
+          <input type="radio" id="month" name="unit-per" value="hour">
           month</label>
         <label for="hour">
-          <input type="radio" id="conversation" name="unit_per" value="hour">
+          <input type="radio" id="conversation" name="unit-per" value="hour">
           conversation</label>
         </div>
-       Which toothpaste would you recommend?
+       <label for="toothpaste-group"><span class="text-you-speak">Which toothpaste would you recommend?</span>
+       <fieldset id="toothpaste-group">
         <label for="aquafresh"><input id="aquafresh" type="checkbox" name="toothpaste" value="aquafresh"> Aquafresh</label>
-        <label for="arm_and_hammer"><input id="arm_and_hammer" type="checkbox" name="toothpaste" value="arm_and_hammer"> Arm &amp; Hammer</label>
+        <label for="arm-and-hammer"><input id="arm-and-hammer" type="checkbox" name="toothpaste" value="arm-and-hammer"> Arm &amp; Hammer</label>
         <label for="colgate"><input id="colgate" type="checkbox" name="toothpaste" value="colgate"> Colgate</label>
         <label for="crest"><input id="crest" type="checkbox" name="toothpaste" value="crest"> Crest</label>
         <label for="crest"><input id="pepsodent" type="checkbox" name="pepsodent" value="pepsodent"> Pepsodent</label>
         <label for="sensodyne"><input id="sensodyne" type="checkbox" name="toothpaste" value="sensodyne"> Sensodyne</label>
-        <label for="other_toothpaste"><input id="other_toothpaste" type="checkbox" name="toothpaste" value="other_toothpaste"> Other:</label><input type="text" id="toothpaste_brand" placeholder="Enter brand of toothpaste when &quot;Other&quot; is selected">
-        Comments:
-        <textarea id="comments" placeholder="Enter comments"></textarea>
-        <button type="submit" id="submit">Submit</button>
+        <label for="other-toothpaste"><input id="other-toothpaste" type="checkbox" name="toothpaste" value="other-toothpaste" onClick="otherToothpaste()"> Other:</label><input type="text" id="toothpaste-brand" placeholder="Enter brand of toothpaste recommended" size="50">
+      </fieldset>
+      </label>
+      <div>      
+        <label id="email-label" for="email">Thank you for your information. Would you mind giving me your email in case I need more information? </label>
+        <input type="email" id="email" required placeholder="user@example.com">
+      </div>
+      Comments:
+      <textarea id="comments" placeholder="Enter comments"></textarea>
+      <button type="submit" id="submit">Submit</button>
     </form>
+    <script>
+      init();
+    </script>
   </body>
 </html>
