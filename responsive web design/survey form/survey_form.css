@@ -2,14 +2,61 @@ body {
   background-color: #cccc99;
   font-family: "Courier", monospaced;
 }
-.form-row {
+
+fieldset {
   display: flex;
+  flex-direction: column; 
+  flex-wrap: wrap;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  margin-top: 5px;
+}
+
+.grid-impression {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(2, max-content 3em 3em 3em);
+  grid-template-rows: auto;
+  margin-top: 1em;
+  width: auto;
 }
 
 .text-you-speak {
   color: white;
   background-color: black;
-  margin: 5px;
+  font-weight: bolder;
+  margin-top: 5px;
+  margin-right: 5px;
+  padding: 2px;
+}
+
+.important-instructions {
+  color: black;
+  background-color: #cccc00;
+  font-weight: bolder;
+  padding: 2px;
+}
+
+.questions-about-you {
+  color: black;
+  background-color: #cc3300;
+  font-weight: bolder;
+  padding: 2px;
 }
 
 .extra {

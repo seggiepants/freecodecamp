@@ -1,5 +1,5 @@
-function dostuff() {
-  alert('stuff');
+function form_submit() {
+  alert('Thank you for filling out the form. If this were a real survey the results would be in a database somewhere.');
   return false;
 }
 
@@ -38,16 +38,32 @@ function jobLength() {
     document.getElementById("over-five-months").checked ? "block" : "none";
 }
 
+function likeJob() {
+  var yes;
+  var no;
+  var no_clear_opinion;
+  yes = document.getElementById("like-job-yes").checked | false;
+  no_clear_opinion = document.getElementById("like-job-no-clear-opinion").checked | false;
+  no = document.getElementById("like-job-no").checked | false;
+
+  document.getElementById("like-job-yes-extra").style.display = 
+    yes || no_clear_opinion ? "block" : "none";
+
+  document.getElementById("like-job-no-extra").style.display = 
+    no ? "block" : "none";
+}
+
 function otherToothpaste() {
   document.getElementById("toothpaste-brand").style.display = 
     document.getElementById("other-toothpaste").checked ? "block" : "none";
 }
 
-function init() {
+function form_init() {
   // Set initial form state.
   fullTimePartTime();
   whatElseDoYouDoForALiving();
   sameResidence();
   jobLength();
+  likeJob();
   otherToothpaste();
 }
