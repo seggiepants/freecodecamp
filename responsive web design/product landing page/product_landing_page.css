@@ -1,0 +1,33 @@
+.nav-link {
+  color: white;
+  background-color: royal-blue;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    "header"
+    "content"
+    "footer";
+}
+
+header {
+  background-color: blue;
+  color: black;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  display: flex;
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+  }
+}
