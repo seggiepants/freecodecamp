@@ -6,38 +6,45 @@
     <script type="text/javascript" scr="product_landing_page.js"></script>
   </head>
   <body>
-    <div class="grid-container">
     <header id = "header" class="header">
-      <img id="header-img" src="data/logo.png"> Johnson &amp; Mills
+      <img id="header-img" src="data/logo.png">
+      <span class="company-name">Johnson &amp; Mills</span>
       <nav id="nav-bar">
         <a href="#fish_sticks" class="nav-link">Fish Sticks</a>
         <a href="#bean_lard_mulch" class="nav-link">Bean Lard Mulch</a>
         <a href="#kelp_dip" class="nav-link">Kelp Dip</a>
       </nav>
     </header>
-    <form id="form" action="https://www.freecodecamp.com/email-submit" method="get">
+    <form id="form" class="email-form" action="https://www.freecodecamp.com/email-submit" method="get">
       <p>
         Enter your email address for a chance to win fabulous coupons worth up to 15&cent; off your next purchase of $3.99 or more.
       </p>
-      <input id="email" name="email" type="email" placeholder="Enter your email-address">      
-      <input id="submit" type="submit" />
+      <input id="email" name="email" type="email" placeholder="Enter email-address">      
+      <input id="submit" type="submit" value="Submit"/>
     </form>
-    <video id="video" width="640" height="480" controls class="video-player">
-  <source src="https://www.youtube.com/embed/W7JyjZI3LUM">
+    <video id="video" controls class="video-player">
+      <source src="data/product_video.mp4" type="video/mp4">
+      <source src="data/product_video.webm" type="video/webm">
 Your browser does not support the video tag.
 </video>
     <div>
     <section id="fish_sticks" class="product">
       <h2>Fish Sticks</h2>
       <img src="data/fish_sticks.png">
-      <div>Now with extra sodium</div>
+      <div>Fish Sticks, a fan favorite for the young and young at heart. These
+        crunchy meat products are perfect for a family dinner. Now with extra
+        sodium to bring out the ocean zest.</div>
     </section>
     </div>
     <div>
     <section id="bean_lard_mulch" class="product">
       <h2>Bean Lard Mulch</h2>
       <img src="data/bean_lard_mulch.png">
-      Now with Vitamin C
+      <div>
+      It is a fan favorite. Bean Lard mulch. A great way to get
+      extra fiber, and now with Vitamin C. A creamy blend of a variety of bean
+      chunks in a smooth creamy lard suspension. Guaranteed to make you feel full.
+    </div>
     </section>
     </div>
     <div>
@@ -45,10 +52,12 @@ Your browser does not support the video tag.
       <h2>Kelp Dip</h2>
       <img src="data/kelp_dip.png">
       <div>
-      Straight from the sea, it's Kelp Dip.
+      Straight from the sea, it's Kelp Dip. What serving of fish sticks is complete 
+      without a serving of Kelp Dip. Made from real Kelp farmed in a sustainable 
+      dolphin safe manner will give you plenty of vitamin K and Iodine. Who can 
+      resist those crunchy flakes of kelp in a dippable red sauce.
       </div>
     </section>
-    </div>
     </div>
 <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
   </body>
