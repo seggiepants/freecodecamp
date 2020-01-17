@@ -1,0 +1,86 @@
+#navbar {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    min-height: 48px;
+    height: 48px;
+}
+
+#navbar label {
+    display: inline-block;
+    color: #fff;
+    background: #a02620;
+    font-style: normal;
+    font-size: 1.2em;
+    padding: 10px;
+}
+
+#navbar input {
+    display: none;
+}
+
+#navbar header {
+    width: 100%;
+    padding-left: 8px;
+}
+
+/* Break down menu items into vertical */
+#navbar ul li {
+    display: block;
+    width: 300px;
+}
+
+/* Toggle show/hide menu on checkbox click */
+#navbar ul {
+display: none;
+}
+
+#navbar input:checked ~ ul {
+display: block;
+}
+
+#main-doc {
+    position: absolute;
+    left: 0px;
+    top: 48px;
+    padding-top: 8px;
+}
+
+@media (min-width: 600px) {
+    #navbar {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        height: 100%;
+        width: 300px;
+        min-width: 300px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #navbar label, #hamburger {
+        display: none;
+    }
+
+    /* Menu Items */
+    #navbar ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0; 
+    }
+
+    #navbar ul li {
+        display: inline-block;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    #main-doc {
+        position: absolute;
+        left: 300px;
+        top: 0px;
+        padding-left: 8px;
+    }
+    
+}
