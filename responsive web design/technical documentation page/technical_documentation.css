@@ -2,13 +2,12 @@
     position: fixed;
     left: 0px;
     top: 0px;
+    z-index: 64; /* Make it bigger than everything else */
     width: 100%;
-    min-height: 48px;
-    height: 48px;
+    max-width: 100%;
 }
 
 #navbar label {
-    display: inline-block;
     color: #fff;
     background: #a02620;
     font-style: normal;
@@ -21,23 +20,37 @@
 }
 
 #navbar header {
-    width: 100%;
     padding-left: 8px;
+}
+
+#navbar-list {
+    margin-top: 9px; /* Matches #navbar label minus a pixel */
+    display: none;
+    padding: 8px;
+    width: 250px;
+    max-width: 250px;
+    background-color:aliceblue;
+    border: 1px solid black;
 }
 
 /* Break down menu items into vertical */
 #navbar ul li {
     display: block;
-    width: 300px;
+    width: 250px;
 }
 
-/* Toggle show/hide menu on checkbox click */
-#navbar ul {
-display: none;
-}
-
-#navbar input:checked ~ ul {
+#navbar input:checked ~ #navbar-list {
 display: block;
+}
+
+#navbar input:checked {
+    padding-bottom: 0px;
+    background-color: red;
+}
+
+#navbar-list ul {
+    margin-top: 0px;
+    padding-left: 8px;
 }
 
 #main-doc {
@@ -57,6 +70,13 @@ display: block;
         min-width: 300px;
         display: flex;
         flex-direction: column;
+        background-color: aliceblue;
+    }
+
+    #navbar-list {
+        display: inline-block;
+        border: 0px;
+        background-color: aliceblue;
     }
 
     #navbar label, #hamburger {
@@ -65,7 +85,7 @@ display: block;
 
     /* Menu Items */
     #navbar ul {
-        list-style-type: none;
+        list-style: none;
         margin: 0;
         padding: 0; 
     }

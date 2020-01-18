@@ -35,6 +35,12 @@ nav {
   text-decoration: none;
 }
 
+.video-player {
+  display: block;
+  margin: auto;
+  border: 4px ridge black;
+}
+
 .nav-link:hover {
   background-color: slateblue;
 }
@@ -74,6 +80,9 @@ nav {
 
 .product h2 {
   grid-area: header;
+  background-color: darkblue;
+  background-image: linear-gradient(to right, darkblue, cadetblue);
+  color: white;
 }
 
 .product img {
@@ -87,6 +96,34 @@ nav {
 
 section>img {
   height: 100px;
+}
+
+footer {
+  background-color: darkblue;
+  background-image: linear-gradient(to right, darkblue, cadetblue);
+  color: white;
+}
+
+footer {
+  margin-top: 5em;
+}
+
+footer>a:link {
+  color:white;
+}
+
+footer>a:visited {
+  color: lightgoldenrodyellow;
+}
+
+footer>a:hover {
+  color: yellow;
+  background-color: darkblue;
+}
+
+footer>a:active {
+  color: greenyellow;
+  background-color: darkblue;
 }
 
 @media (min-width: 600px) {
@@ -118,6 +155,7 @@ section>img {
 
   .product h2 {
     grid-column: 1/3;
+    background-color: ;
   }
 
   section>img {
