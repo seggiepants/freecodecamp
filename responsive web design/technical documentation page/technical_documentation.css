@@ -1,3 +1,21 @@
+header {
+    font-size: larger;
+    font-weight: bolder;
+}
+
+code {
+    font-family: monospace;
+    white-space: pre;
+}
+
+.article_image {
+    float: right;
+    width: 250vw;
+    max-width: 300px;
+    height: 250vh;
+    max-height: 300px;
+}
+
 #navbar {
     position: fixed;
     left: 0px;

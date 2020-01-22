@@ -10,52 +10,120 @@
         <label for="hamburger">&#9776;</label>
         <input type="checkbox" id="hamburger">
         <div id="navbar-list">
-            <header>Nav Bar</header>
+            <header>Navigation</header>
             <ul>
-                <li><a href="#Section_001" class="nav-link">Section 001</a></li>
-                <li><a href="#Section_002" class="nav-link">Section 002</a></li>
-                <li><a href="#Section_003" class="nav-link">Section 003</a></li>
-                <li><a href="#Section_004" class="nav-link">Section 004</a></li>
+                <li><a href="#Introduction" class="nav-link">Introduction</a></li>
+                <li><a href="#Methods" class="nav-link">Methods</a></li>
+                <li><a href="#Manual" class="nav-link">Manual</a></li>
+                <li><a href="#Recursion" class="nav-link">Recursion</a></li>
                 <li><a href="#Section_005" class="nav-link">Section 005</a></li>
             </ul>
         </div>
     </nav>
     <main id="main-doc">
-        Hello, World!
-        <section id="Section_001" class="main-section">
-            <header>Section 001</header>
-            <p>Stuff</p>
-            <p>All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy. All work and no play makes Jack a dull boy. </p>
-            <code>let a = 5</code>
+        <h1>The Sierpinski triangle</h1>
+        <section id="Introduction" class="main-section">
+            <header>Introduction</header>
+            <p>The Sierpinski triangle is a common fractal normally in the shape of an equliateral triangle.
+                The triangle is made of nested triangles. The triangle is divided up into four smaller triangles.
+                The center (upside down triangle) is left empty. The top, left and right triangles are continually
+                subdivided in a similar manner.
+            </p>
+            <p>As a fractal, it is self similar. If you zoom into a section of the fractal it will
+                have the same structure and similar appearance to the fractal as a whole. There is 
+                no predetermined limit to the detail of the structure. In theory you could zoom in forever.
+            </p>
+            <p>
+                <figure class="article_image"><a href="https://en.wikipedia.org/wiki/Pascal%27s_triangle" alt="Pascal's Triangle on wikipedia.org" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Sierpinski_Pascal_triangle.svg" alt="Pascal's Triangle with shading to show Sierpinski Triangle structure."></a>
+                    <figcaption>Figure 1: Pascal's Triangle with shading to show Sierpinski Triangle structure. (Courtesy of wikipedia.org)</figcaption>
+                </figure>
+                Outside of fractals the structure can be seen elsewhere in mathematics. In particular in <a href="https://en.wikipedia.org/wiki/Pascal%27s_triangle" target="_blank"></a>Pascal's Triangle</a>. 
+                Pascal's triangle begins with a 1. For each subsequent you add new values offset by a half space from the previous row. Each number is the sum of the numbers above and to the right and above and to the left (zero at the edges).
+                So the first row is 1, the second is 1,2,1, and the third is 1, 3, 3, 1 and so forth. 
+                The strange part is, if you shade in the odd numbered numbers, but not the even ones, it clearly shows the pattern of the Sierpinski triangle.                
+            </p>
+            <p>This is a fractal that can show up when you aren't expecting it.</p>
+        </section>
+
+        <section id="Methods" class="main-section">
+            <header>Methods</header>
+            <p>We will cover several methods of generating a Sierpinski triangle. 
+                These methods include:
+            </p>
             <ul>
-                <li>Red</li>
-                <li>Orange</li>
-                <li>Yellow</li>
-                <li>Green</li>
-                <li>Blue</li>
-                <li>Indigo</li>
-                <li>Violet</li>
+                <li>Manual</li>
+                <li>Recursion</li>
+                <li>Chaos Game</li>
+                <li>L-System</li>
+                <li>Arrowhead Curve</li>
             </ul>
+            <p>Each of these methods will be considered in the following sections.</p>
         </section>
 
-        <section id="Section_002" class="main-section">
-            <header>Section 002</header>
-            <p>Stuff</p>
-            <p>More Stuff</p>
+        <section id="Manual" class="main-section">
+            <header>Manual</header>
+            <p>The Sierpinski triangle is not too complicated to generate manually. You can do this several ways such as:</p>
+            <ul>
+                <li>Removing triangles</li>
+                <li>Shrinking and Duplication</li>
+                <li>Combining several triangles together</li>
+            </ul>
+            <p>When removing triangles you simply subdivide the triangle into four triangles. One upright triangle on each corner with a remaining inverted triangle in the center. At this point you would remove the center by either cutting it out (assuming you were drawing this on paper) or by coloring it in. Then simply repeat the process with the remaining triangles.
+                This does present problems when the paper gets too small or for precision cutting/coloring.
+            </p>
+            <p>Conceptually you can think of the construction as simply shrinking down the original triangle then duplicating it three times and building a new triangle out of that. 
+                In fact if you use this method, you can start with an arbitrary shape such as a square a dinosaur or just about anything. It won't matter as the detail will shrink down to a point as you add more revisions. 
+                You could do this manually with a photocopier with a reduce function, but the detail will quickly fade with generations.</p>
+            </p>
+            <p>
+                A more fun group project would be to have a large group of people make their own Sierpinski triangle. When complete they can be cut out and 
+                arranged into a much larger Sierpinski triangle structure of size only limited by your paper and willpower.
+            </p>
+        </section>
+
+        <section id="Recursion" class="main-section">
+            <header>Recursion</header>
+            <p>Fractals in general are perfect candidate to be plotted by a computer and the Sierpinski triangle is no exception. As a fractal, the method lends itself naturally to recursion where a function can call itself an arbitrary number of times (potentially infinitely).</p>
+            <p>Below is a sample implementation of the Sierpinski triangle using recursion and the turtle graphics library in <a href="https://www.python.org/" target="_blank">Python</a>.</p>
+            <code>import turtle
+import math
+
+def drawTriangle(x, y, w):
+    angle = math.pi / 3.0 # 60 degrees
+
+    if (w &lt;= 3):
+        turtle.penup()
+        turtle.setpos(x, y)
+        turtle.pendown()
+
+        x1 = x + (w * math.cos(angle))
+        y1 = y + (w * math.sin(angle))
+        turtle.setpos(x1, y1)
+
+        x2 = x + w
+        y2 = y
+        turtle.setpos(x2, y2)
+        turtle.setpos(x, y)
+        turtle.penup()
+    else:
+        drawTriangle(x, y, w / 2)
+        drawTriangle(x + (w / 2), y, w / 2)
+        drawTriangle((x + (w / 2) * math.cos(angle)), (y + (w / 2) * math.sin(angle)), w / 2)
+
+size = min(turtle.window_width(), turtle.window_height())
+size = int(7 * size / 8)
+
+turtle.speed('fastest')
+turtle.tracer(0, 0)
+drawTriangle(int(-size / 2), int(-size / 2), size)
+turtle.update()
+
+turtle.penup()
+turtle.setpos(-size, size)
+turtle.hideturtle()
+            </code>
             <code>let a = 5</code>
-        </section>
-
-        <section id="Section_003" class="main-section">
-            <header>Section 003</header>
-            <p>Stuff</p>
-            <p>More Stuff</p>
             <code>let a = 5</code>
-        </section>
-
-        <section id="Section_004" class="main-section">
-            <header>Section 004</header>
-            <p>Stuff</p>
-            <p>More Stuff</p>
             <code>let a = 5</code>
         </section>
 
