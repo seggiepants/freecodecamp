@@ -124,6 +124,9 @@ turtle.hideturtle()
             <div>
             <canvas id = "recursive" width = "300" height ="300"></canvas>
             <canvas id = "chaos" width = "300" height ="300"></canvas>
+            <canvas id = "l_system" width = "300" height ="300"></canvas>
+            <canvas id = "arrowhead" width = "300" height ="300"></canvas>
+            <canvas id = "tree" width = "300" height ="300"></canvas>
             </div>
             <code>let a = 5</code>
             <code>let a = 5</code>
@@ -134,7 +137,43 @@ turtle.hideturtle()
             <header>Section 005</header>
             <p>Stuff</p>
             <p>More Stuff</p>
-            <code>let a = 5</code>
+            <code>import turtle
+
+def drawTriangle(angle, size, iterations):
+    turtle.right(angle);
+
+    if (size &gt; 1) and (iterations &gt; 0):
+        for i in range(3):
+            # save position and state
+            old_pos = turtle.position()
+            old_heading = turtle.heading()
+
+            # draw the tirangle
+            turtle.forward(size / 2)
+            drawTriangle(angle, size / 2, iterations - 1)
+
+            # restore position and state
+            turtle.penup()
+            turtle.setposition(old_pos)
+            turtle.setheading(old_heading)
+            turtle.pendown()
+
+            # draw the next part of the triangle.
+            turtle.left(angle)
+
+
+size = min(turtle.window_width(), turtle.window_height()) / 2
+turtle.speed('fastest')
+turtle.tracer(0, 0)
+turtle.hideturtle()
+for i in range(120, 20, -3):
+    turtle.clear()
+    turtle.setpos(0, 0)
+    turtle.pencolor('BLACK')
+    turtle.setheading(90)
+    drawTriangle(i, size, 7)
+    turtle.update()
+                </code>                
         </section>
     </main>
 <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
