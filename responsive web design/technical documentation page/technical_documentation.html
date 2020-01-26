@@ -15,7 +15,10 @@
                 <li><a href="#Methods" class="nav-link">Methods</a></li>
                 <li><a href="#Manual" class="nav-link">Manual</a></li>
                 <li><a href="#Recursion" class="nav-link">Recursion</a></li>
-                <li><a href="#Section_005" class="nav-link">Section 005</a></li>
+                <li><a href="#Chaos_Game" class="nav-link">Chaos Game</a></li>
+                <li><a href="#Lindemeyer_Systems" class="nav-link">Lindemeyer Systems</a></li>
+                <li><a href="#Arrowhead_Curve" class="nav-link">Arrowhead Curve</a></li>
+                <li><a href="#Relationships" class="nav-link">Relationships</a></li>
             </ul>
         </div>
     </nav>
@@ -84,60 +87,227 @@
             <header>Recursion</header>
             <p>Fractals in general are perfect candidate to be plotted by a computer and the Sierpinski triangle is no exception. As a fractal, the method lends itself naturally to recursion where a function can call itself an arbitrary number of times (potentially infinitely).</p>
             <p>Below is a sample implementation of the Sierpinski triangle using recursion and the turtle graphics library in <a href="https://www.python.org/" target="_blank">Python</a>.</p>
-            <code>import turtle
+            <pre>
+                <code>
+import turtle
 import math
 
-def drawTriangle(x, y, w):
+def drawTriangle(x, y, size, iterations):
     angle = math.pi / 3.0 # 60 degrees
 
-    if (w &lt;= 3):
+    if (size &lt;= 3 or iterations &lt;= 0):
         turtle.penup()
         turtle.setpos(x, y)
         turtle.pendown()
 
-        x1 = x + (w * math.cos(angle))
-        y1 = y + (w * math.sin(angle))
-        turtle.setpos(x1, y1)
-
-        x2 = x + w
-        y2 = y
-        turtle.setpos(x2, y2)
+        turtle.setpos(x + (size * math.cos(angle)), y + (size * math.sin(angle)))
+        turtle.setpos(x + size, y)
         turtle.setpos(x, y)
-        turtle.penup()
     else:
-        drawTriangle(x, y, w / 2)
-        drawTriangle(x + (w / 2), y, w / 2)
-        drawTriangle((x + (w / 2) * math.cos(angle)), (y + (w / 2) * math.sin(angle)), w / 2)
+        drawTriangle(x, y, size / 2, iterations - 1)
+        drawTriangle(x + (size / 2), y, (size / 2), iterations - 1)
+        drawTriangle((x + (size / 2) * math.cos(angle)), (y + (size / 2) * math.sin(angle)), (size / 2), iterations - 1)
 
 size = min(turtle.window_width(), turtle.window_height())
 size = int(7 * size / 8)
 
 turtle.speed('fastest')
 turtle.tracer(0, 0)
-drawTriangle(int(-size / 2), int(-size / 2), size)
-turtle.update()
-
-turtle.penup()
-turtle.setpos(-size, size)
 turtle.hideturtle()
-            </code>
-            <div>
+drawTriangle(int(-size / 2), int(-size / 2), size, 7)
+turtle.update()                
+            </code></pre>
+            <figure>
             <canvas id = "recursive" width = "300" height ="300"></canvas>
-            <canvas id = "chaos" width = "300" height ="300"></canvas>
-            <canvas id = "l_system" width = "300" height ="300"></canvas>
-            <canvas id = "arrowhead" width = "300" height ="300"></canvas>
-            <canvas id = "tree" width = "300" height ="300"></canvas>
-            </div>
-            <code>let a = 5</code>
-            <code>let a = 5</code>
-            <code>let a = 5</code>
+            <figcaption>Sierpinski Triangle generated recursively</figcaption>
+            </figure>
+            <p>In this code the drawTriangle() function does the actual work 
+            and the rest of the script is setup and calling the function. The 
+            drawTriangle function first checks if we have a triangle that is 
+            too small to subdivide further or if we have reached the maximum
+            limit for subdividing the triangle. This check is required to keep 
+            the function from looping. If we meet the condition we simply draw 
+            the current triangle.
+            </p><p>
+            If you haven't reached the limit however, the function instead makes
+            three more calls to the drawTriangle function. One each for the 
+            bottom left, bottom right, and top sections. If you are comfortable 
+            with recursion this code should be fairly simple.
+            </p>            
         </section>
 
-        <section id="Section_005" class="main-section">
-            <header>Section 005</header>
+        <section id="Chaos_Game" class="main-section">
+            <header>Chaos Game</header>
             <p>Stuff</p>
             <p>More Stuff</p>
-            <code>import turtle
+            <pre>
+                <code>
+import turtle
+
+def drawTriangle(angle, size, iterations):
+    turtle.right(angle);
+
+    if (size &gt; 1) and (iterations &gt; 0):
+        for i in range(3):
+            # save position and state
+            old_pos = turtle.position()
+            old_heading = turtle.heading()
+
+            # draw the triangle
+            turtle.forward(size / 2)
+            drawTriangle(angle, size / 2, iterations - 1)
+
+            # restore position and state
+            turtle.penup()
+            turtle.setposition(old_pos)
+            turtle.setheading(old_heading)
+            turtle.pendown()
+
+            # draw the next part of the triangle.
+            turtle.left(angle)
+
+
+size = min(turtle.window_width(), turtle.window_height()) / 2
+turtle.speed('fastest')
+turtle.tracer(0, 0)
+turtle.hideturtle()
+for i in range(120, 20, -3):
+    turtle.clear()
+    turtle.setpos(0, 0)
+    turtle.pencolor('BLACK')
+    turtle.setheading(90)
+    drawTriangle(i, size, 7)
+    turtle.update()
+                    </code>
+                </pre>
+                <figure>
+                    <canvas id = "chaos" width = "300" height ="300"></canvas>
+                    <figcaption>Sierpinski Triangle generated with the Chaos Game</figcaption>
+                </figure>
+        </section>
+        <section id="Lindemeyer_Systems" class="main-section">
+            <header>Lindemeyer Systems</header>
+            <pre>
+                <code>
+import turtle
+import math
+
+def drawTriangle(x, y, start, step_size, iterations):
+    angle = 120 # degrees
+    current = start
+
+    if iterations &lt; 1:
+        iterations = 1
+
+    for i in range(iterations):
+        nextState = ''
+        for ch in current:
+            if (ch == 'F'):
+                nextState = nextState + 'F-G+F+G-F'
+            elif (ch == 'G'):
+                nextState = nextState + 'GG'
+            else:
+                nextState = nextState + ch
+        current = nextState
+
+    turtle.penup()
+    turtle.setpos(x, y)
+    turtle.pendown()
+
+    for ch in current:
+        if (ch == 'F' or ch == 'G'):
+            turtle.forward(step_size)
+        elif (ch == '+'):
+            turtle.left(angle)
+        elif (ch == '-'):
+            turtle.right(angle)
+
+size = min(turtle.window_width(), turtle.window_height())
+size = int(7 * size / 8)
+iterations = 7
+step_size =  max(1, size / math.pow(2, iterations))
+
+turtle.clear()
+turtle.speed('fastest')
+turtle.tracer(0, 0)
+turtle.hideturtle()
+turtle.setheading(60)
+drawTriangle(int(-size / 2), int(-size / 2), 'F-G-G', step_size, iterations)
+turtle.update()
+                </code>
+            </pre>
+            <figure>
+            <canvas id = "l_system" width = "300" height ="300"></canvas>
+            <figcaption>The Sierpinski Triangle can be expressed as a Lindemeyer System</figcaption>
+            </figure>            
+        </section>
+        <section id="Arrowhead_Curve" class="main-section">
+            <header>Arrowhead Curve</header>
+            <pre>
+                <code>
+import turtle
+import math
+
+def drawTriangle(x, y, start, step_size, iterations):
+    angle = 60 # degrees
+    current = start
+
+    if iterations &lt; 1:
+        iterations = 1
+
+    for i in range(iterations):
+        nextState = ''
+        for ch in current:
+            if (ch == 'A'):
+                nextState = nextState + 'B-A-B'
+            elif (ch == 'B'):
+                nextState = nextState + 'A+B+A'
+            else:
+                nextState = nextState + ch
+        current = nextState
+
+    turtle.penup()
+    turtle.setpos(x, y)
+    if (iterations % 2 == 0):
+        turtle.setheading(0)
+    else:
+        turtle.setheading(60)
+    turtle.pendown()
+
+    for ch in current:
+        if (ch == 'A' or ch == 'B'):
+            turtle.forward(step_size)
+        elif (ch == '+'):
+            turtle.left(angle)
+        elif (ch == '-'):
+            turtle.right(angle)
+
+size = min(turtle.window_width(), turtle.window_height())
+size = int(7 * size / 8)
+iterations = 8
+step_size =  max(1, size / math.pow(2, iterations))
+
+turtle.clear()
+turtle.speed('fastest')
+turtle.tracer(0, 0)
+turtle.hideturtle()
+turtle.setheading(60)
+drawTriangle(int(-size / 2), int(-size / 2), 'A', step_size, iterations)
+turtle.update()
+
+                </code>
+            </pre>
+            <figure>
+                <canvas id = "arrowhead" width = "300" height ="300"></canvas>            
+                <figcaption>At high iterations the Arrowhead curve converges to the Sierpinski Triangle</figcaption>
+            </figure>
+        </section>                    
+
+        <section id="Relationships" class="main-section">
+            <header>Relationships</header>
+            <pre>
+                <code>
+import turtle
 
 def drawTriangle(angle, size, iterations):
     turtle.right(angle);
@@ -173,7 +343,12 @@ for i in range(120, 20, -3):
     turtle.setheading(90)
     drawTriangle(i, size, 7)
     turtle.update()
-                </code>                
+                </code>
+            </pre>                
+            <figure>
+            <canvas id = "tree" width = "300" height ="300"></canvas>
+            <figcaption>Changing the angle using to draw a Sierpinski triangle can result in a three branch recursive tree.</figcaption>
+            </figure>
         </section>
     </main>
 <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
