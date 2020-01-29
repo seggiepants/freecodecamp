@@ -16,9 +16,10 @@
                 <li><a href="#Manual" class="nav-link">Manual</a></li>
                 <li><a href="#Recursion" class="nav-link">Recursion</a></li>
                 <li><a href="#Chaos_Game" class="nav-link">Chaos Game</a></li>
-                <li><a href="#Lindemeyer_Systems" class="nav-link">Lindemeyer Systems</a></li>
+                <li><a href="#Lindemayer_Systems" class="nav-link">Lindemayer Systems</a></li>
                 <li><a href="#Arrowhead_Curve" class="nav-link">Arrowhead Curve</a></li>
                 <li><a href="#Relationships" class="nav-link">Relationships</a></li>
+                <li><a href="#Conclusion" class="nav-link">Conclusion</a></li>
             </ul>
         </div>
     </nav>
@@ -33,16 +34,19 @@
             </p>
             <p>As a fractal, it is self similar. If you zoom into a section of the fractal it will
                 have the same structure and similar appearance to the fractal as a whole. There is 
-                no predetermined limit to the detail of the structure. In theory you could zoom in forever.
+                no predetermined limit to the detail of the structure. In theory you could zoom in forever. The fractal can be called a level 3 N-Flake, Sieve or a Gasket
             </p>
             <p>
-                <figure class="article_image"><a href="https://en.wikipedia.org/wiki/Pascal%27s_triangle" alt="Pascal's Triangle on wikipedia.org" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Sierpinski_Pascal_triangle.svg" alt="Pascal's Triangle with shading to show Sierpinski Triangle structure."></a>
-                    <figcaption>Figure 1: Pascal's Triangle with shading to show Sierpinski Triangle structure. (Courtesy of wikipedia.org)</figcaption>
-                </figure>
                 Outside of fractals the structure can be seen elsewhere in mathematics. In particular in <a href="https://en.wikipedia.org/wiki/Pascal%27s_triangle" target="_blank"></a>Pascal's Triangle</a>. 
                 Pascal's triangle begins with a 1. For each subsequent you add new values offset by a half space from the previous row. Each number is the sum of the numbers above and to the right and above and to the left (zero at the edges).
                 So the first row is 1, the second is 1,2,1, and the third is 1, 3, 3, 1 and so forth. 
                 The strange part is, if you shade in the odd numbered numbers, but not the even ones, it clearly shows the pattern of the Sierpinski triangle.                
+                <figure class="article_image"><a href="https://en.wikipedia.org/wiki/Pascal%27s_triangle" alt="Pascal's Triangle on wikipedia.org" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Sierpinski_Pascal_triangle.svg" alt="Pascal's Triangle with shading to show Sierpinski Triangle structure."></a>
+                    <figcaption>Figure 1: Pascal's Triangle with shading to show Sierpinski Triangle structure. (Courtesy of wikipedia.org)</figcaption>
+                </figure>
+            </p>
+            <p>
+                The fractal is even common in pop culture. The TriForce in the &quot;The Legend of Zelda&quot; is a Sierpinski triangle that has only been subdivided once. 
             </p>
             <p>This is a fractal that can show up when you aren't expecting it.</p>
         </section>
@@ -78,14 +82,16 @@
                 You could do this manually with a photocopier with a reduce function, but the detail will quickly fade with generations.</p>
             </p>
             <p>
-                A more fun group project would be to have a large group of people make their own Sierpinski triangle. When complete they can be cut out and 
+                A more fun group project would be to have a large group of people make their own Sierpinski triangle on paper. When complete they can be cut out and 
                 arranged into a much larger Sierpinski triangle structure of size only limited by your paper and willpower.
             </p>
         </section>
 
         <section id="Recursion" class="main-section">
             <header>Recursion</header>
-            <p>Fractals in general are perfect candidate to be plotted by a computer and the Sierpinski triangle is no exception. As a fractal, the method lends itself naturally to recursion where a function can call itself an arbitrary number of times (potentially infinitely).</p>
+            <p>Fractals in general are perfect candidate to be plotted by a computer and the Sierpinski triangle is no exception. 
+                As a fractal, the method lends itself naturally to recursion where a function can call itself an arbitrary number of 
+                times (potentially infinitely).</p>
             <p>Below is a sample implementation of the Sierpinski triangle using recursion and the turtle graphics library in <a href="https://www.python.org/" target="_blank">Python</a>.</p>
             <pre>
                 <code>
@@ -126,7 +132,7 @@ turtle.update()
             drawTriangle function first checks if we have a triangle that is 
             too small to subdivide further or if we have reached the maximum
             limit for subdividing the triangle. This check is required to keep 
-            the function from looping. If we meet the condition we simply draw 
+            the function from looping forever. If we meet the condition we simply draw 
             the current triangle.
             </p><p>
             If you haven't reached the limit however, the function instead makes
@@ -138,8 +144,12 @@ turtle.update()
 
         <section id="Chaos_Game" class="main-section">
             <header>Chaos Game</header>
-            <p>Stuff</p>
-            <p>More Stuff</p>
+            <p>Generating the Sierpinski triangle using the chaos game is somewhat strange. Instead of drawing triangles, you draw random points in the triangle.</p>
+            <p>First you choose a random point in the triangle and a randome corner. Then plot the point and use that point for the next point to 
+                plot. From there you choose a random corner and go halfway between the previous point and the corner of the triangle.
+                If you do it enough times, the Sierpinski triangle emerges.
+            </p>
+            <p>Much like the previous method, below is some python code to generate the triangle as well as a javascript canvas to show off how it runs.</p>
             <pre>
                 <code>
 import turtle
@@ -185,8 +195,13 @@ for i in range(120, 20, -3):
                     <figcaption>Sierpinski Triangle generated with the Chaos Game</figcaption>
                 </figure>
         </section>
-        <section id="Lindemeyer_Systems" class="main-section">
-            <header>Lindemeyer Systems</header>
+        <section id="Lindemayer_Systems" class="main-section">
+            <header>Lindemayer Systems</header>
+            <p>Lindemayer Systems of L-Systems is a string rewriting method for generating fractal like images. You start with an Axiom, or base case for the string.
+                From the axiom or previous generation's output you iterate over the string. If the character matches one of the rules, you replace that character with the new value in the next generation string.</p>
+            <p>After this all that is left is to map the rules in the string to a step in drawing the output. The step can be something like moving forward or backward or changing the orientation of a virtual turtle.</p>
+            <p>Lindemayer systems are especially good a generating plant or algae type images. We will look at two Lindemayer Systems</p>
+            <p>Below is the first version in both python and a javascript visualization.</p>
             <pre>
                 <code>
 import turtle
@@ -238,11 +253,13 @@ turtle.update()
             </pre>
             <figure>
             <canvas id = "l_system" width = "300" height ="300"></canvas>
-            <figcaption>The Sierpinski Triangle can be expressed as a Lindemeyer System</figcaption>
+            <figcaption>The Sierpinski Triangle can be expressed as a Lindemayer System</figcaption>
             </figure>            
         </section>
         <section id="Arrowhead_Curve" class="main-section">
             <header>Arrowhead Curve</header>
+            <p>Another type of Lindemayer System that produces the Sierpenski triangle is the arrowhead curve. If you view the javascript visualization you can see that it starts with a somewhat arrowhead type of curve.
+            However, with successive generations the detail of the arrowhead starts to fade and the fractal has the Sierpenski Triangle when the limit of size heads to zero.</p>
             <pre>
                 <code>
 import turtle
@@ -302,9 +319,16 @@ turtle.update()
                 <figcaption>At high iterations the Arrowhead curve converges to the Sierpinski Triangle</figcaption>
             </figure>
         </section>                    
-
         <section id="Relationships" class="main-section">
             <header>Relationships</header>
+            <p>The Sierpenski triangle has several related fractals. The most common is the Sierpenski Carpet. Instead of operating 
+                on a triangle you operate on a square cut into a 3x3 grid. You remove the center piece and begin iterating just like the Sierpinski triangle.
+            </p>
+            <p>If you go into 3D you can find the menger sponge, Sierpenski cube, or the Sierpenski pyramid.</p>
+            <p>There are even fractals that degenerate into a Sierpenski triangle if you change some of the conditions.
+                Below is a Sierpenski triangle. However, if you reduce the angle that the branches are drawn at it changes from 
+                a triangle to a tree.
+            </p>
             <pre>
                 <code>
 import turtle
@@ -349,6 +373,13 @@ for i in range(120, 20, -3):
             <canvas id = "tree" width = "300" height ="300"></canvas>
             <figcaption>Changing the angle using to draw a Sierpinski triangle can result in a three branch recursive tree.</figcaption>
             </figure>
+        </section>
+
+        <section id="Conclusion" class="main-section">
+            <header>Conclusion</header>
+            <p>The Sierpenski triangle is one of the most common fractals you may encounter. In fact if you are tying to make a generative drawing you may create it or something similar by accident.
+                It is certainly a fractal worth looking into.
+            </p>
         </section>
     </main>
 <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
