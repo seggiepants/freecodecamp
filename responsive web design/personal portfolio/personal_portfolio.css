@@ -4,6 +4,12 @@
 
 #welcome-section{
   height: 100vh;
+  text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0.25in;
+  padding-right: 0.25in;
+  vertical-align: middle
 }
 
 #navbar {
