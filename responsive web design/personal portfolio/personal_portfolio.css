@@ -1,5 +1,16 @@
-.project-title {
-  color: red;
+#projects {
+  /* background-color: blue; */
+  color: black;
+}
+
+#projects .project-title {
+  background-color: green;
+  color: black;
+}
+
+#projects .project-body {
+  background-color: yellow;
+  color: black;
 }
 
 #welcome-section{
@@ -62,5 +73,5 @@
       top: 0px;
       padding-left: 8px;
   }
-  
+ 
 }
