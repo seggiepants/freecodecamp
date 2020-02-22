@@ -1,105 +1,105 @@
 {
-	quotes: [
+	"quotes": [
 		{
-			author: "Holly",
-			text: "Look, I'm trying to navigate at faster than the speed of light, which means that before you see something, you've already passed through it. Even with an IQ of 6000, it's still brown-trousers time."
+			"author": "Holly",
+			"text": "Look, I'm trying to navigate at faster than the speed of light, which means that before you see something, you've already passed through it. Even with an IQ of 6000, it's still brown-trousers time."
 		}, 
 		{
-			author: "Arnold Rimmer",
-			text: "LOOK, I'M SICK TO DEATH OF HEARING ABOUT THESE STUPID CATS! MY CONCERNS ARE SLIGHTLY MORE IMPORTANT THAN WHAT KIND OF STUPID, SMEGGING CARDBOARD HAT I'M WEARING! I'M TRYING TO DECIPHER THIS! THIS IS SCIENCE, LADDIE! You can smirk, Lister, but I believe the Quagaars!"
+			"author": "Arnold Rimmer",
+			"text": "LOOK, I'M SICK TO DEATH OF HEARING ABOUT THESE STUPID CATS! MY CONCERNS ARE SLIGHTLY MORE IMPORTANT THAN WHAT KIND OF STUPID, SMEGGING CARDBOARD HAT I'M WEARING! I'M TRYING TO DECIPHER THIS! THIS IS SCIENCE, LADDIE! You can smirk, Lister, but I believe the Quagaars!"
 		},
 
 		{
-			author: "Arnold Rimmer",
-			text: "[drunkenly telling the story behind his last words &quot;gazpacho soup&quot;] It was the greatest night of my life; I had been invited to the Captain's table. I had only been with the company FOURTEEN YEARS. Six officers and me... they called me &quot;Arnold!&quot; We had gazpacho soup for starters... I didn't know that gazpacho soup was meant to be served cold. I called over the chef and told him to take it away and bring it back hot! So he did... the looks on their faces still haunt me today! I thought they were laughing at the chef, when all the time they were laughing at me as I ate my piping hot gazpacho soup! I never ate at the Captain's table again. That was the end of my career. If only they'd mentioned it in basic training! Instead of having us climbing up and down ropes and crawling on your elbows through tunnels--if only just ONCE they would've mentioned that gazpacho soup was served cold--I would've been an admiral by now!...instead of a nothing, which is what I am, let's face it... I never got off the bottom rung, and do you know why? It's because I didn't have the right nobby parents! I'll bet Todhunter was fed gazpacho soup as soon as he was on solids! No, I'll bet he was breast-fed on it! One side gazpacho soup, the other side freely-dispensed chilled champagne!"
+			"author": "Arnold Rimmer",
+			"text": "[drunkenly telling the story behind his last words \"gazpacho soup\"] It was the greatest night of my life; I had been invited to the Captain's table. I had only been with the company FOURTEEN YEARS. Six officers and me... they called me \"Arnold!\" We had gazpacho soup for starters... I didn't know that gazpacho soup was meant to be served cold. I called over the chef and told him to take it away and bring it back hot! So he did... the looks on their faces still haunt me today! I thought they were laughing at the chef, when all the time they were laughing at me as I ate my piping hot gazpacho soup! I never ate at the Captain's table again. That was the end of my career. If only they'd mentioned it in basic training! Instead of having us climbing up and down ropes and crawling on your elbows through tunnels--if only just ONCE they would've mentioned that gazpacho soup was served cold--I would've been an admiral by now!...instead of a nothing, which is what I am, let's face it... I never got off the bottom rung, and do you know why? It's because I didn't have the right nobby parents! I'll bet Todhunter was fed gazpacho soup as soon as he was on solids! No, I'll bet he was breast-fed on it! One side gazpacho soup, the other side freely-dispensed chilled champagne!"
 		}, 
 		{
-			author: "Cat",
-			text: "You'd never get a cat to be a servant. You ever see a cat return a stick? &quot;Hey, man! You threw the stick, you go get it yourself! I'm busy! If you wanted the stick so bad, why'd you throw it away in the first place?&quot;"
+			"author": "Cat",
+			"text": "You'd never get a cat to be a servant. You ever see a cat return a stick? \"Hey, man! You threw the stick, you go get it yourself! I'm busy! If you wanted the stick so bad, why'd you throw it away in the first place?\""
 		}, 
 		{
-			author: "Arnold Rimmer",
-			text: "I loved that little lemming. I built him a little wall he could hurl himself off of."
+			"author": "Arnold Rimmer",
+			"text": "I loved that little lemming. I built him a little wall he could hurl himself off of."
 		}, 
 		{
-			author: "Cat",
-			text: "Oh, a magic door! Well, why didn't you say?"
+			"author": "Cat",
+			"text": "Oh, a magic door! Well, why didn't you say?"
 		}, 
 		{
-			author: "Holly", 
-			text: "We are talking jape of the decade. We are talking April, May, June, July & August fool. Yes, that's right... I am Queeg"
+			"author": "Holly", 
+			"text": "We are talking jape of the decade. We are talking April, May, June, July & August fool. Yes, that's right... I am Queeg"
 		}, 
 		{
-			author: "Holly",
-			text: "Well, the thing about a black hole - its main distinguishing feature - is it's black. And the thing about space, the colour of space, your basic space colour, is black. So how are you supposed to see them?"
+			"author": "Holly",
+			"text": "Well, the thing about a black hole - its main distinguishing feature - is it's black. And the thing about space, the colour of space, your basic space colour, is black. So how are you supposed to see them?"
 		}, 
 		{
-			author: "Arnold Rimmer",
-			text: &quot;What about the Rimmer Directive, which states "Never tangle with anything that's got more teeth than the entire Osmond family&quot;?"
+			"author": "Arnold Rimmer",
+			"text": "What about the Rimmer Directive, which states \"Never tangle with anything that's got more teeth than the entire Osmond family\"?"
 		}, 
 		{
-			author: "Arnold Rimmer",
-			text: "Let's get tough. The time for talking is over. Call it extreme if you like, but I propose we hit it hard and hit it fast with a major -- and I mean major -- leaflet campaign, and while it's reeling from that, we'd follow up with a {whist} drive, a car boot sale, some street theatre and possibly even some benefit concerts. OK? Now, if that's not enough, I'm sorry, it's time for the T-shirts: &quot;Mutants Out&quot; ... &quot;Chameleonic Life Forms, No Thanks&quot; ... and if that's not enough, well, I don't know what will be."
+			"author": "Arnold Rimmer",
+			"text": "Let's get tough. The time for talking is over. Call it extreme if you like, but I propose we hit it hard and hit it fast with a major -- and I mean major -- leaflet campaign, and while it's reeling from that, we'd follow up with a {whist} drive, a car boot sale, some street theatre and possibly even some benefit concerts. OK? Now, if that's not enough, I'm sorry, it's time for the T-shirts: \"Mutants Out\" ... \"Chameleonic Life Forms, No Thanks\" ... and if that's not enough, well, I don't know what will be."
 		}, 
 		{
-			author: "Kryten",
-			text: "&quot;Pub.&quot; Ah, yes: a meeting place where people attempt to achieve advanced states of mental incompetence by the repeated consumption of fermented vegetable drinks."
+			"author": "Kryten",
+			"text": "\"Pub.\" Ah, yes, a meeting place where people attempt to achieve advanced states of mental incompetence by the repeated consumption of fermented vegetable drinks."
 		}, 
 		{
-			author: "Kryten",
-			text: "I knew I was lying. No silicon heaven? Preposterous! Where would all the calculators go?"
+			"author": "Kryten",
+			"text": "I knew I was lying. No silicon heaven? Preposterous! Where would all the calculators go?"
 		}, 
 		{
-			author: "Kryten",
-			text: "Well, the basic difference is that an android would never rip off a human's head and spit down his neck."
+			"author": "Kryten",
+			"text": "Well, the basic difference is that an android would never rip off a human's head and spit down his neck."
 		}, 
 		{
-			author: "Talkie Toaster",
-			text: "The question is this: given that God is infinite, and that the Universe is also infinite...would you like a toasted teacake?"
+			"author": "Talkie Toaster",
+			"text": "The question is this: given that God is infinite, and that the Universe is also infinite...would you like a toasted teacake?"
 		}, 
 		{
-			author: "Ace Rimmer",
-			text: "Smoke me a kipper, I'll be back for breakfast."
+			"author": "Ace Rimmer",
+			"text": "Smoke me a kipper, I'll be back for breakfast."
 		}, 
 		{
-			author: "Kryten",
-			text: "An excellent and inventive suggestion, sir, with just two tiny drawbacks: a) We don't have any jet-powered rocket pants; and b) there's no such thing as jet-powered rocket pants outside the fictional serial &quot;Robbie Rocket Pants.&quot;"
+			"author": "Kryten",
+			"text": "An excellent and inventive suggestion, sir, with just two tiny drawbacks: a) We don't have any jet-powered rocket pants; and b) there's no such thing as jet-powered rocket pants outside the fictional serial \"Robbie Rocket Pants.\""
 		}, 
 		{
-			author: "Kryten",
-			text: "But I am not human. And neither are you. And it is not our place to judge them. I wonder why you do."
+			"author": "Kryten",
+			"text": "But I am not human. And neither are you. And it is not our place to judge them. I wonder why you do."
 		}, 
 		{
-			author: "Arnold Rimmer",
-			text: "They've been naughty boys, haven't they, Mr Flibble?"
+			"author": "Arnold Rimmer",
+			"text": "They've been naughty boys, haven't they, Mr Flibble?"
 		}, 
 		{
-			author: "David Lister",
-			text: "I'll tell you one thing. I've been to a parallel universe, I've seen time running backwards, I've played pool with planets and I've given birth to twins, but I never thought in my entire life I'd taste an edible Pot Noodle."
+			"author": "David Lister",
+			"text": "I'll tell you one thing. I've been to a parallel universe, I've seen time running backwards, I've played pool with planets and I've given birth to twins, but I never thought in my entire life I'd taste an edible Pot Noodle."
 		}, 
 		{
-			author: "David Lister",
-			text: "Why would a haddock kill itself? ...Why am I even asking that question?"
+			"author": "David Lister",
+			"text": "Why would a haddock kill itself? ...Why am I even asking that question?"
 		}, 
 		{
-			author: "Arnold Rimmer",
-			text: "This is a nightmare! I'm on the run from the Fascist Police with a murderer, a mass murderer and a man in a Bri-Nylon shirt!"
+			"author": "Arnold Rimmer",
+			"text": "This is a nightmare! I'm on the run from the Fascist Police with a murderer, a mass murderer and a man in a Bri-Nylon shirt!"
 		}, 
 		{
-			author: "Arnold Rimmer",
-			text: "Open communication channels, Lister. Broadcast on all known frequencies and in all known languages, including Welsh. This is acting senior officer of the Jupiter Mining Corperation transport vessel StarBug. Now hear this. It's only coming once. We surrender, totally and without condition, thank you for listening. Oh, additional, sorry for taking your valuable time. Sorry, thank you, bye, sorry, thank you bye."
+			"author": "Arnold Rimmer",
+			"text": "Open communication channels, Lister. Broadcast on all known frequencies and in all known languages, including Welsh. This is acting senior officer of the Jupiter Mining Corporation transport vessel StarBug. Now hear this. It's only coming once. We surrender, totally and without condition, thank you for listening. Oh, additional, sorry for taking your valuable time. Sorry, thank you, bye, sorry, thank you bye."
 		}, 
 		{
-			author: "Cat",
-			text: "[to a Rogue Simulant] There's one thing you should know. Last time we met I was wearing a cute little black number with peach trim and gold spangles, and although it looks like I'm wearing the same outfit today, it is in fact an entirely different cute little black number, with completely different gold spangles!"
+			"author": "Cat",
+			"text": "[to a Rogue Simulant] There's one thing you should know. Last time we met I was wearing a cute little black number with peach trim and gold spangles, and although it looks like I'm wearing the same outfit today, it is in fact an entirely different cute little black number, with completely different gold spangles!"
 		}, 
 		{
-			author: "David Lister",
-			text: "Can you explain it to me? Something a bit more confidence-stirring than &quot;Can I hack off your limb?&quot;"
+			"author": "David Lister",
+			"text": "Can you explain it to me? Something a bit more confidence-stirring than \"Can I hack off your limb?\""
 		}, 
 		{
-			author: "Arnold Rimmer",
-			text: "We have nothing to fear but fear itself. Apart from pain. And maybe humiliation and obviously death. And failure. But apart from fear, pain and humiliation, failure and the unknown and death we have nothing to fear but fear itself. Who’s with me?"
+			"author": "Arnold Rimmer",
+			"text": "We have nothing to fear but fear itself. Apart from pain. And maybe humiliation and obviously death. And failure. But apart from fear, pain and humiliation, failure and the unknown and death we have nothing to fear but fear itself. Who’s with me?"
 		}
 	]
 }
