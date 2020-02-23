@@ -4,7 +4,7 @@ import './App.css';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { quotes: [], author: "loading...", text: "loading..." };
+    this.state = { quotes: [], author: "loading...", text: "loading...", image: "" };
     this.loadQuotes = this.loadQuotes.bind(this);
     this.randomQuote = this.randomQuote.bind(this);
     this.tweetQuote = this.tweetQuote.bind(this);
@@ -19,7 +19,7 @@ class App extends React.Component {
     fetch('./red_dwarf.json')
     .then(response => response.json())
     .then(json => {
-      const newState = Object.assign({}, { author: this.state.author, text: this.state.text}, json);
+      const newState = Object.assign({}, { author: this.state.author, text: this.state.text, image: this.state.image}, json);
       this.setState(newState);
       this.randomQuote();
     })
@@ -29,6 +29,7 @@ class App extends React.Component {
     console.log(this);
     const oldAuthor = this.state.author;
     const oldText = this.state.text;
+    
     if (this.state.quotes.length > 0) {
       let index;
       let quote;
@@ -37,7 +38,7 @@ class App extends React.Component {
         quote = this.state.quotes[index];
       } while (quote.author === oldAuthor || quote.text === oldText);
 
-      let newState = Object.assign({}, {author: quote.author, text: quote.text}, this.state.quotes );
+      let newState = Object.assign({}, {author: quote.author, text: quote.text, image: quote.image}, this.state.quotes );
       console.log(newState);
       this.setState(newState);
     }
@@ -54,14 +55,23 @@ class App extends React.Component {
       <div className="App">
         <div id="quote-box" className="App-header">
           Red-Dwarf Quote Machine
-          <div id="text">
-            Quote: {this.state.text}
+          <div id="frame">
+            <div id="quote-frame">
+              <div id="text">
+                {this.state.text}
+              </div>
+            </div>
+            <div id="author-frame">
+              <img src={this.state.image} alt={this.state.author} />          
+              <div id="author">
+                {this.state.author}
+              </div>
+            </div>
           </div>
-          <div id="author">
-            Author: {this.state.author}
+          <div id="nav-frame">
+            <button id="new-quote" onClick={this.randomQuote}>New Quote</button>
+            <a href={twitter_url + encodeURIComponent("\"" + this.state.text + "\" " + this.state.author)} id="tweet-quote">Twitter</a>
           </div>
-          <button id="new-quote" onClick={this.randomQuote}>New Quote</button>
-          <a href={twitter_url + encodeURIComponent("\"" + this.state.text + "\" " + this.state.author)} id="tweet-quote">Twitter</a>
         </div>
       </div>
     );

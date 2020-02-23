@@ -11,3 +11,30 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#quote-box {
+  display: flex;
+  flex-direction: column;
+}
+
+#frame {
+  display: flex;
+  flex-direction: row;
+}
+
+#author-frame {
+  display: flex;
+  flex-direction: column;
+}
+
+#nav-frame {
+  display: flex;
+  flex-direction: row;
+}
+
+#quote-frame {
+  padding: 2rem;
+  border-radius: 16px;
+  color: black;
+  background-color: white;
+}
