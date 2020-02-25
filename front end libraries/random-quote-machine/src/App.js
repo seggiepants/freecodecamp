@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -52,25 +51,28 @@ class App extends React.Component {
   render () {
     const twitter_url = "https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text="
     return (
-      <div className="App">
-        <div id="quote-box" className="App-header">
+      <div>
+        <div id="quote-box" className="row">
           Red-Dwarf Quote Machine
           <div id="frame">
-            <div id="quote-frame">
-              <div id="text">
-                {this.state.text}
+            <div className="row">
+              <div id="quote-frame">
+                <div id="text">
+                  {this.state.text}
+                </div>
+                
               </div>
-            </div>
-            <div id="author-frame">
-              <img src={this.state.image} alt={this.state.author} />          
-              <div id="author">
-                {this.state.author}
+              <div id="author-frame" className="col-lg-5 col-xs-10">
+                <img src={this.state.image} alt={this.state.author} />          
+                <div id="author">
+                  {this.state.author}
+                </div>
               </div>
             </div>
           </div>
-          <div id="nav-frame">
-            <button id="new-quote" onClick={this.randomQuote}>New Quote</button>
-            <a href={twitter_url + encodeURIComponent("\"" + this.state.text + "\" " + this.state.author)} id="tweet-quote">Twitter</a>
+          <div id="nav-frame" className="row">
+            <button id="new-quote" onClick={this.randomQuote} className="btn btn-primary">New Quote</button>
+            <a href={twitter_url + encodeURIComponent("\"" + this.state.text + "\" " + this.state.author)} id="tweet-quote" className="btn btn-info "><i className="fa fa-twitter"></i>Twitter</a>
           </div>
         </div>
       </div>
