@@ -52,23 +52,19 @@ class App extends React.Component {
     const twitter_url = "https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text="
     return (
       <div>
-        <div id="quote-box" className="row">
-          Red-Dwarf Quote Machine
-          <div id="frame">
-            <div className="row">
-              <div id="quote-frame">
-                <div id="text">
-                  {this.state.text}
-                </div>
-                
-              </div>
-              <div id="author-frame" className="col-lg-5 col-xs-10">
-                <img src={this.state.image} alt={this.state.author} />          
-                <div id="author">
-                  {this.state.author}
-                </div>
-              </div>
-            </div>
+        <div id="quote-box">
+          <div className="row">
+          <img alt="" src="img/logo.svg" className = "red-dwarf-logo" /><span id="app-title"><h1>Red Dwarf Quote Machine</h1></span>
+          <img alt="" src="img/logo.svg" className = "red-dwarf-logo" />
+          </div>
+          <div id="text" className="row">
+            {this.state.text}
+          </div>              
+          <div id="author-frame" className="row">
+            <img src={this.state.image} alt={this.state.author} />          
+          </div>
+          <div id="author" className="row">
+              {this.state.author}
           </div>
           <div id="nav-frame" className="row">
             <button id="new-quote" onClick={this.randomQuote} className="btn btn-primary">New Quote</button>

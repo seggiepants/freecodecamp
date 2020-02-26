@@ -7,7 +7,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: darkslategray;
+  background-color: #1c150ffd;
+  background-image: url('img/red_dwarf_ship.svg');
+  background-size: 100vw;
 }
 
 code {
@@ -15,14 +17,23 @@ code {
     monospace;
 }
 
-#author-frame {
-  display: flex;
-  flex-direction: column;
+#author {
+  justify-content: center;
+  font-size: larger;
+  font-weight: bold;
+  background-color: #000000A0;
+  color: white;
+  padding: 8px;
+  margin: 8px;
+  width: fit-content;
 }
 
-#quote-frame {  
-  z-index: 1;
-  margin: 2rem;
+#author-frame img {
+  height: 50vh;
+}
+
+#quote-box {
+  background-color: #000000c0;
 }
 
 /*
@@ -33,7 +44,6 @@ http://nicolasgallagher.com/pure-css-speech-bubbles/demo/
 #text {
   padding: 2rem;
   border-radius: 16px;
-  background-color: pink;
   z-index: 3;
   position:relative;
   padding:15px;
@@ -44,6 +54,7 @@ http://nicolasgallagher.com/pure-css-speech-bubbles/demo/
   -webkit-border-radius:10px;
   -moz-border-radius:10px;
   border-radius:10px;  
+  max-width: 80vw;
 }
 
 #text:before {
@@ -76,9 +87,42 @@ http://nicolasgallagher.com/pure-css-speech-bubbles/demo/
   width:0;
 }
 
-#nav-frame {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
+#nav-frame>button,a {
+  margin: 8px;
+}
+
+.row {
+  margin: 0px;
+}
+
+#app-title {
+  margin: 8px 16px;
+  background-color: #000000A0;
+  color: white;
+}
+
+#app-title>h1 {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: large;
+  font-weight: bold;
+}
+
+.red-dwarf-logo {
+  height: 5rem;
+}
+
+@media screen and (min-width: 720px) {
+  .red-dwarf-logo {
+    height: 8rem;
+  }
+
+  #app-title {
+    margin: 1rem 3rem;      
+  }
+
+  #app-title>h1 {
+    font-size: x-large;
+  }
+
+
 }
