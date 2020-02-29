@@ -8,9 +8,7 @@ import DOMPurify from 'dompurify';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      source: '**Loading** ... *Please Wait*'
-    };
+
     this.sourceChange = this.sourceChange.bind(this);    
     this.loadMarkdown = this.loadMarkdown.bind(this);
     this.renderMarkdown = this.renderMarkdown.bind(this);
@@ -22,19 +20,20 @@ class App extends React.Component {
       gfm: true,
       breaks: true,
     });
-    this.sourceChange(); // Render the default text.
-    this.loadMarkdown(); // Go get the actual default document.
+    this.renderMarkdown(this.props.source);
+    this.loadMarkdown();
+
   }
 
   sourceChange() {
     let newValue = document.getElementById("editor").value;
     this.props.submitNewMessage(newValue);
-    this.renderMarkdown();
+    this.renderMarkdown(newValue);
   }
 
-  renderMarkdown() {
+  renderMarkdown(source) {
     let preview = document.getElementById("preview");
-    preview.innerHTML = DOMPurify.sanitize(marked(this.props.source));
+    preview.innerHTML = DOMPurify.sanitize(marked(source));
   }
 
   loadMarkdown() {
@@ -42,7 +41,7 @@ class App extends React.Component {
     .then(response => response.text())    
     .then(text => {
       this.props.submitNewMessage(text);
-      this.renderMarkdown();
+      this.sourceChange();
     })
   } 
 
