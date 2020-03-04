@@ -1,3 +1,5 @@
+@import '~bootstrap/dist/css/bootstrap.css';
+
 .App {
   text-align: center;
 }
@@ -13,4 +15,44 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.drum-pad {
+  margin: 1rem;
+  padding: 1rem;
+}
+
+#display {
+  font-size: xx-large;
+  font-family: Orbitron, Impact, sans-serif;
+  background-color: yellowgreen;
+  color: black;
+  border: 4px ridge darkolivegreen
+}
+
+#title {
+  font-size: large;
+  font-family: Orbitron, Impact, sans-serif;
+  text-align: center;
+  border: 4px black;
+  background-color: yellow;
+  display: inline-block;
+}
+
+#fade_1 {
+  background-image: linear-gradient(to right, black, yellow);
+  display: inline-block;
+  margin: 0px;
+  padding: 1px;
+}
+
+#fade_2 {
+  background-image: linear-gradient(to right, yellow, black);
+  display: inline-block;
+  margin: 0px;
+  padding: 1px;
+}
+
+body {
+  background-color: black;
 }
