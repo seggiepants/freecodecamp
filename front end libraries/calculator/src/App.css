@@ -1,0 +1,60 @@
+@import '~bootstrap/dist/css/bootstrap.css';
+
+#root {
+    display: grid;
+    justify-content: center;
+}
+
+.calculator {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: auto auto auto 1rem auto;
+    grid-template-areas: 
+    "display display display display display"
+    "title title title . divide"
+    "seven eight nine . multiply"
+    "four five six . subtract"
+    "one two three . add"
+    "clear zero decimal . equals";
+    align-items: center;
+    justify-items: stretch;
+    background-color: whitesmoke;
+    border-radius: 1rem;
+    margin: 1rem;
+    padding: 1rem;
+    border: lightgray outset;
+    width: 20rem;
+    align-self: center;
+}
+
+button {
+    border-radius: 20%;
+    padding: 1rem;
+    margin: 2px;
+    border-style: outset !important; /* ignored without !important */
+    border-width: medium;
+}
+
+
+#display {
+    font-size: x-large;
+    background-color: yellowgreen;
+    color: black;
+    border: inset;
+    align-self: stretch;
+    padding: 0.25rem;
+    margin: 0.25rem;
+    width: 100%;
+    text-align: right;
+    grid-area: display;
+  }
+
+  #title {
+    grid-area: title;
+    background-image: linear-gradient(to right, maroon, red, coral);
+    background-color: red;
+    color: white;
+    padding: 0.25rem;
+    margin: 0.25rem;
+  }
+  
