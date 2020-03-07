@@ -98,12 +98,13 @@ class App extends React.Component {
 
     this.handleKey = this.handleKey.bind(this);
     this.onClick = this.onClick.bind(this);
-    this.tokensToString = this.tokensToString(this);
-    this.updateTokens = this.updateTokens.bind(this);
+    this.tokensToString = this.tokensToString.bind(this);
+    this.updateTokens = this.updateTokens.bind(this);    
   }
 
   componentDidMount() {    
     document.addEventListener("keydown", this.handleKey);
+    this.updateTokens(this.state.tokens);
   }
 
   componentWillUnmount() {
@@ -115,16 +116,32 @@ class App extends React.Component {
     let keys = Object.keys(this.buttons);
     for(let i = 0; i < keys.length; i++) {
       if (this.buttons[keys[i]].key === key) {
-        console.log(this.buttons[keys[i]]);
         this.onClick(this.buttons[keys[i]]);
         break;
       }
     }
   }
 
-  onClick(btn) {
+  onClick(e) {
+    let btn;
+    // Did we get called by a keystroke or a button click.
+    if (e.hasOwnProperty("dispatchConfig")) {
+      // Button click
+      if (this.buttons.hasOwnProperty(e.target.id)) {
+        btn = this.buttons[e.target.id];
+      } else {
+        btn = {};
+      }
+    } else {
+      // Keystroke
+      btn = e;
+    }
     let tokens = [...this.state.tokens];
-    let lastToken = {'type': 'error', 'value': 'ERR'};
+
+    if (tokens.length === 1 && tokens[0].type === "error") {
+      tokens = [];
+    }
+    let lastToken = {};
     if (tokens.length > 0) { 
       lastToken = tokens[tokens.length - 1];
     }
@@ -137,9 +154,9 @@ class App extends React.Component {
       }
 
       if (newToken) {
-        tokens.push({ "type": "digit", "value": btn.key});
+        tokens.push({ "type": "number", "value": btn.key, "label": btn.label});
       } else if (lastToken.type === "number") {
-        if ((btn.key !== ".") || (lastToken.value.indexOf(".") !== -1)) {
+        if ((btn.key !== ".") || (lastToken.value.indexOf(".") === -1)) {
           // Not the decimal point, or we haven't used the decimal point yet.
           lastToken.value = lastToken.value + btn.key;
         }
@@ -157,14 +174,24 @@ class App extends React.Component {
         }
 
         if (newDigit) {
-          tokens.push({ "type": "number", "value": btn.key});
+          tokens.push({ "type": "number", "value": btn.key, "label": btn.label});
         } else {
-          tokens.push({ "type": "operator", "value": btn.key});
+          tokens.push({ "type": "operator", "value": btn.key, "label": btn.label});
+        }
+      } else if (btn.key === "C") {
+        tokens = [];
+      } else if (btn.key === "=") {
+        // Compute the value then create a new token of just that value
+        let newValue = this.tokensCalculate(tokens);
+        if (newValue === "ERR") {
+          tokens = [{ "type": "error", "value": newValue, "label": newValue}]          
+        } else {
+          tokens = [{ "type": "number", "value": newValue, "label": newValue}]
         }
       } else {
         if (tokens.length > 0) { // Can't start with an operator
           if (lastToken.type === "number") { // Don't allow consecutive operators.
-            tokens.push({ "type": "operator", "value": btn.key});
+            tokens.push({ "type": "operator", "value": btn.key, "label": btn.label});
           }
         }
       }
@@ -172,19 +199,90 @@ class App extends React.Component {
     this.updateTokens(tokens);    
   }
 
-  tokensToString(tokens) {
-    /*
-    console.log(this.state.tokens);
-    console.log(tokens);
-    let values = tokens.map(token => token.value);
-    console.log(values);
-    if (tokens.length > 0) {
-      return tokens.map((token) => token.value).join(' ');
-    } else {
-      return [];
+  tokensCalculate(tokens) {
+    let parseTokens = [...tokens];
+    let i = 0
+    while (i < parseTokens.length) {
+      let expr = parseTokens.slice(i, i + 3);
+      if (expr.length === 3) {
+        if ((expr[0].type === "number") && (expr[1].type === "operator") && (expr[2].type === "number")) {
+          let operator = expr[1].value;
+          let newValue = 0;
+          if (operator === "*" || operator === "/") {
+            if (operator === "*") {
+              newValue = parseFloat(expr[0].value) * parseFloat(expr[2].value);
+            } else if (operator === "/") {
+              newValue = parseFloat(expr[0].value) / parseFloat(expr[2].value);
+            }
+            let start = [];
+            if (i > 0) {
+              start = parseTokens.slice(0, i);
+            }
+            let middle = {"type": "number", "value": newValue.toString(), "label": newValue.toString() };
+            let end = parseTokens.slice(i + 3, parseTokens.length);
+            parseTokens = start.concat(middle, end);
+          } else {
+            i++;
+          } 
+        } else {
+          i++;
+        }
+      } else {
+        i++;
+      }
     }
-    */
-   return "0.";
+
+    i = 0
+    while (i < parseTokens.length) {
+      let expr = parseTokens.slice(i, i + 3);
+      if (expr.length === 3) {
+        if ((expr[0].type === "number") && (expr[1].type === "operator") && (expr[2].type === "number")) {
+          let operator = expr[1].value;
+          let newValue = 0;
+          if (operator === "+" || operator === "-") {
+            if (operator === "+") {
+              newValue = parseFloat(expr[0].value) + parseFloat(expr[2].value);
+            } else if (operator === "-") {
+              newValue = parseFloat(expr[0].value) - parseFloat(expr[2].value);
+            }
+            let start = [];
+            if (i > 0) {
+              start = parseTokens.slice(0, i);
+            }
+            let middle = {"type": "number", "value": newValue.toString(), "label": newValue.toString() };
+            let end = parseTokens.slice(i + 3, parseTokens.length);
+            parseTokens = start.concat(middle, end);
+          } else {
+            i++;
+          } 
+        } else {
+          i++;
+        }
+      } else {
+        i++;
+      }
+    }
+    if (parseTokens.length === 1) {
+      return parseTokens[0].value;
+    } else if (parseTokens.length === 0) {
+      return "0";
+    } else {
+      return "ERR";
+    }
+  }
+
+  tokensToString(tokens) {
+    if (tokens.length > 0) {
+      return tokens.map((token) => {
+        if (token.type !== "operator") {
+          return token.value
+        } else {
+          return ' ' + token.label + ' ';
+        }
+      }).join('');
+    } else {
+      return "0";
+    }
   }
 
   updateTokens(tokens) { 
@@ -206,7 +304,7 @@ class App extends React.Component {
       let buttonStyle = {
         gridArea: keys[i],
       };
-      guiButtons.push(<button id={keys[i]} key={keys[i]} className={buttonClass} style={buttonStyle}>
+      guiButtons.push(<button id={keys[i]} key={keys[i]} className={buttonClass} style={buttonStyle} onClick={this.onClick}>
         {button.label}      
       </button>);
     }
