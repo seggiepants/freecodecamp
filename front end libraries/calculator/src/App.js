@@ -158,7 +158,9 @@ class App extends React.Component {
       } else if (lastToken.type === "number") {
         if ((btn.key !== ".") || (lastToken.value.indexOf(".") === -1)) {
           // Not the decimal point, or we haven't used the decimal point yet.
-          lastToken.value = lastToken.value + btn.key;
+          if (btn.key !== "0" || lastToken.value !== "0") {
+            lastToken.value = lastToken.value + btn.key;
+          }
         }
       }
     } else if (btn.type === "operator") { 
@@ -175,7 +177,12 @@ class App extends React.Component {
 
         if (newDigit) {
           tokens.push({ "type": "number", "value": btn.key, "label": btn.label});
+        } else if (lastToken.type === "operator") {
+          // Replace the operator if two in a row are entered.
+          lastToken.value = btn.key;
+          lastToken.label = btn.label;
         } else {
+          // Add an operator.
           tokens.push({ "type": "operator", "value": btn.key, "label": btn.label});
         }
       } else if (btn.key === "C") {
@@ -190,8 +197,18 @@ class App extends React.Component {
         }
       } else {
         if (tokens.length > 0) { // Can't start with an operator
-          if (lastToken.type === "number") { // Don't allow consecutive operators.
+          if (lastToken.type === "number" && lastToken.value !== "-") { // Don't allow consecutive operators. Treat number="-" as minus operator.
             tokens.push({ "type": "operator", "value": btn.key, "label": btn.label});
+          } else { // instead, replace them.
+            lastToken = tokens.pop();
+            if (tokens.length > 0) {
+              if (tokens[tokens.length - 1].type === "operator") {
+                // If we had two tokens in a row pop off one more.
+                // Should only happen if we had a number = "-" between operators (I think).
+                lastToken = tokens.pop();
+              }
+            }
+            tokens.push({"type": "operator", "value": btn.key, "label": btn.label});
           }
         }
       }
@@ -221,15 +238,11 @@ class App extends React.Component {
             let middle = {"type": "number", "value": newValue.toString(), "label": newValue.toString() };
             let end = parseTokens.slice(i + 3, parseTokens.length);
             parseTokens = start.concat(middle, end);
-          } else {
-            i++;
+            i--;
           } 
-        } else {
-          i++;
         }
-      } else {
-        i++;
       }
+      i++;
     }
 
     i = 0
@@ -245,6 +258,7 @@ class App extends React.Component {
             } else if (operator === "-") {
               newValue = parseFloat(expr[0].value) - parseFloat(expr[2].value);
             }
+            // I should probably use splice instead.
             let start = [];
             if (i > 0) {
               start = parseTokens.slice(0, i);
