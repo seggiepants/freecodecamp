@@ -1,1 +1,105 @@
 @import '~bootstrap/dist/css/bootstrap.css';
+
+.App {
+    display: grid;
+    justify-content: center;
+}
+#container {
+    background-color: lightgray;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: auto 1fr 1fr auto;
+    grid-template-areas: 
+    "title title title title"
+    ". . . ."
+    "breakLabel breakLabel breakLabel breakLabel"
+    "breakDecrement breakLength breakLength breakIncrement"
+    "sessionLabel sessionLabel sessionLabel sessionLabel"
+    "sessionDecrement sessionLength sessionLength sessionIncrement"
+    ". timerLabel timeLeft ."
+    ". startStop reset .";
+    align-items: center;
+    justify-items: stretch;
+    align-self: center;
+    width: 20rem;
+    padding: 1rem;
+    margin: 1rem;
+    border-style: outset;
+    justify-self: center;
+}
+
+#title {
+    grid-area: title;
+    font-size: x-large;
+    text-align: center;
+}
+
+#break-label {
+    grid-area: breakLabel;
+    padding-top: 8px;
+}
+
+#break-decrement {
+    grid-area: breakDecrement;
+}
+
+#break-increment {
+    grid-area: breakIncrement;
+}
+
+#break-length {
+    grid-area: breakLength;
+    text-align: center;
+    border: 1px solid darkgray;
+    padding: 6px;
+    margin: 2px;
+    background-color: white;
+}
+
+#session-label {
+    grid-area: sessionLabel;
+    padding-top: 8px;
+}
+
+#session-decrement {
+    grid-area: sessionDecrement;
+}
+
+#session-increment {
+    grid-area: sessionIncrement;
+}
+
+#session-length {
+    grid-area: sessionLength;
+    text-align: center;
+    border: 1px solid darkgray;
+    padding: 6px;
+    margin: 2px;
+    background-color: white;
+}
+
+#timer-label {
+    grid-area: timerLabel;
+    text-align: right;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    font-size: larger;
+}
+
+#time-left {
+    grid-area: timeLeft;
+    text-align: left;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    font-size: larger;
+}
+
+#start_stop {
+    grid-area: startStop;
+    margin: 1rem;
+}
+
+#reset {
+    grid-area: reset;
+    margin: 1rem;
+}
