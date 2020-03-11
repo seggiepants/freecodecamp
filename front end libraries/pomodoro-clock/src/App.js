@@ -13,14 +13,13 @@ class App extends React.Component {
       },
       break_length: break_length,
       session_length: session_length,
-      time_left: 0,
-      time_left_label: this.formatTimeLeft(0),
+      time_left: session_length * 60,
+      time_left_label: this.formatTimeLeft(session_length * 60),
       is_running: false,
       timer: 0,
       mode: "Session",
     };
 
-    this.beep = this.beep.bind(this);
     this.formatTimeLeft = this.formatTimeLeft.bind(this);
     this.getStartStopLabel = this.getStartStopLabel.bind(this);
     this.onBreakDecrement = this.onBreakDecrement.bind(this);
@@ -30,10 +29,7 @@ class App extends React.Component {
     this.onSessionIncrement = this.onSessionIncrement.bind(this);
     this.onStartStop = this.onStartStop.bind(this);
     this.onTick = this.onTick.bind(this);
-  }
-
-  beep() {
-    document.getElementById("beep").play();
+    this.updateTimeLeft = this.updateTimeLeft.bind(this);
   }
 
   formatTimeLeft(seconds_remaining) {
@@ -52,10 +48,12 @@ class App extends React.Component {
 
   onBreakDecrement() {
     this.setState(Object.assign(this.state, {break_length: Math.max(1, this.state.break_length - 1)}));
+    this.updateTimeLeft();
   }
 
   onBreakIncrement() {
     this.setState(Object.assign(this.state, {break_length: Math.min(60, this.state.break_length + 1)}));
+    this.updateTimeLeft();
   }
 
   onReset() {
@@ -66,7 +64,6 @@ class App extends React.Component {
 
     let time_left = this.state.default.session_length * 60; // 0;
     if (this.state.is_running === true) {
-      console.log("Clear Timer");
       clearInterval(this.state.timer);
     }
 
@@ -83,17 +80,17 @@ class App extends React.Component {
 
   onSessionDecrement() {
     this.setState(Object.assign(this.state, {session_length: Math.max(1, this.state.session_length - 1)}));    
+    this.updateTimeLeft();
   }
   
   onSessionIncrement() {
     this.setState(Object.assign(this.state, {session_length: Math.min(60, this.state.session_length + 1)}));
+    this.updateTimeLeft();
   }
 
-  onStartStop() {    
-    
+  onStartStop() {        
     if (this.state.is_running) {
       // Stop the clock.
-      console.log("Stop");
       clearInterval(this.state.timer);
       this.setState(Object.assign(this.state, {
         is_running: false,
@@ -101,11 +98,13 @@ class App extends React.Component {
       }));
     } else {
       // Start the clock.
-      console.log("Start");
       let handle = setInterval(this.onTick, 1000);
       let time_left = this.state.time_left;
       if (time_left === 0) {
         time_left = this.state.session_length * 60;
+        this.setState(Object.assign(this.state, {
+          mode: "Session",
+        }));
       }
       this.setState(Object.assign(this.state, {
         time_left: time_left,
@@ -126,7 +125,6 @@ class App extends React.Component {
       } else {
         time_left = this.state.session_length * 60;
         mode = "Session";
-        console.log(`session ${time_left} length: ${this.state.session_length}`);
       }
     } 
     if (this.state.is_running) {
@@ -137,6 +135,23 @@ class App extends React.Component {
       }));
     }
   }
+  
+  updateTimeLeft() {
+    if (!this.state.is_running) {
+      let timeLeft = 0;
+      if (this.state.mode === "Session") {
+        timeLeft = this.state.session_length * 60;
+      } else if (this.state.mode === "Break") {
+        timeLeft = this.state.break_length * 60;
+      }
+
+      this.setState(Object.assign(this.state, {
+        time_left: timeLeft
+        , time_left_label: this.formatTimeLeft(timeLeft)
+      }));
+    }
+  }
+
   render () {
     // const audio_root = "https://github.com/seggiepants/freecodecamp/raw/master/front%20end%20libraries/pomodoro-clock/public/audio/";
     const audio_root = "audio/";
