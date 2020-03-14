@@ -1,0 +1,18 @@
+#title {
+    text-align: center;
+    width: 100%;
+    font-size: larger;
+}
+
+.bar {
+    border: 1px solid green;
+}
+
+.bar:hover{
+    fill: red;
+    border: 1px solid black;
+}
+
+.tooltip {
+    background-color: palegoldenrod;
+}
