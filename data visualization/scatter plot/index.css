@@ -1,0 +1,16 @@
+#title {
+    text-align: center;
+    width: 100%;
+    font-size: larger;
+}
+
+.dot {
+    background-color: black;
+    border: 1px solid black;
+}
+
+.tooltip {
+    background-color: palegoldenrod;
+    display: inline-block;
+    position: absolute;
+}
