@@ -25,7 +25,8 @@ function createBarChart(data) {
         .append("div")
         .attr("class", "tooltip")
         .attr("id", "tooltip")
-        .text("Hello World")
+        .attr("visibility", "hidden")
+        .text("")
         ;
 
 
@@ -45,7 +46,7 @@ function createBarChart(data) {
         ;
         
     const xAxis = d3.axisBottom(xScale);
-    xAxis.tickFormat(d3.timeFormat("%m-%d-%Y"));
+    xAxis.tickFormat(d3.timeFormat("%Y"));
     const yAxis = d3.axisLeft(yScale);
 
     svg.append("g")
@@ -73,23 +74,22 @@ function createBarChart(data) {
         .attr("fill", "navy")
         .attr("data-date", (d, i) => d[0])
         .attr("data-gdp", (d, i) => d[1])
+        .on("mouseover", (d, i) => {
+            tooltip
+                .text(`GDP: ${d[1]}
+Date: ${new Date(d[0]).toLocaleDateString()}`)
+                .style("visibility", "visible")
+                .attr("data-date", d[0])
+                .attr("style", "left:" + xScale(new Date(d[0])) + padding + "px; top:" + yScale(d[1]) + padding + "px;")
+        })
+        .on("mouseout", (d, i) => { 
+            tooltip.style("visibility", "hidden")
+        })
         .append("title")
         .text(d => `GDP: ${d[1]}
 Date: ${new Date(d[0]).toLocaleDateString()}`)
         .attr("data-date", d => new Date(d[0]))
-        .on("mouseover", (d, i) => {
-            console.log(`mouseover: ${d}, ${i}`);
-/*            tooltip
-                .text(`GDP: ${d[1]}
-Date: ${new Date(d[0]).toLocaleDateString()}`)
-                .style("visible", "true")
-                .attr("data-date", d => new Date(d[0]))
-        */})
-        .on("mouseout", (d, i) => { 
-            //console.log(`mouseout: ${d}, ${i}`);
-            console.log("mouseout");
-            //tooltip.style("visible", "false")
-        })
+        
         ;
 }
 
