@@ -4,9 +4,9 @@ const h = 600;
 const url = "data/cyclist-data.json";
 
 function createScatterPlot(data) {
-    // console.log(data);
-
     const title = "Doping in Bicycle racing against Time";
+    const color_doping = "purple";
+    const color_no_doping = "lightgreen";
 
     d3.select("body")
         .append("p")
@@ -24,17 +24,23 @@ function createScatterPlot(data) {
         .append("div")
         .attr("class", "tooltip")
         .attr("id", "tooltip")
-        .attr("visibility", "hidden")
-        .text("")
+        .text("Tooltip")
         ;
+
+    let elem = document.getElementById("tooltip");
+    elem.style.visibility = "hidden";
 
     const countAccusations = data.reduce((acc, d) => acc + (d.Doping.length > 0 ? 1 : 0), 0);
     const countNoAccusations = data.length - countAccusations;
+    let html = `
+    <div><strong>Legend:</strong></div>
+    <div><span class="square" style="background-color: ${color_doping}">&nbsp;</span>&nbsp;Accusations:&nbsp${countAccusations}</div>
+    <div><span class="square" style="background-color: ${color_no_doping}">&nbsp;</span>&nbsp;Uncontested:&nbsp${countNoAccusations}</div>`;
     d3.select("body")
         .append("div")
         .attr("id", "legend")
-        .text(`Doping accusations: Accusation - ${countAccusations}, No Accusation - ${countNoAccusations}, Total - ${data.length}`)
         ;
+    document.getElementById("legend").innerHTML = html;
 
     const dateTimePrefix = "01-01-1970 00:";
     const minYear = d3.min(data, (d) => d.Year);
@@ -58,7 +64,7 @@ function createScatterPlot(data) {
     const xAxis = d3.axisBottom(xScale)
         .tickFormat(d3.format("d"))
     ;
-    // xAxis.tickFormat(d3.timeFormat("%Y"));
+
     const yAxis = d3.axisLeft(yScale)
         .tickFormat(d3.timeFormat("%M:%S"))
         ;
@@ -81,30 +87,38 @@ function createScatterPlot(data) {
         .append("circle")
         .attr("cx", (d, i) => xScale(d.Year))
         .attr("cy", (d, i) => yScale(new Date(dateTimePrefix + d.Time)))
-            //console.log(`cx: ${xScale(d.Year) + padding}, cy: ${yScale(new Date(dateTimePrefix + d.Time)) + padding}`);
-        .attr("r", 5)
+        .attr("r", 6)
         .attr("class", "dot")
         .attr("data-xvalue", (d, i) => d.Year)
         .attr("data-yvalue", (d, i) => new Date(dateTimePrefix + d.Time))
         .attr("fill", (d, i) => {
             if (d.Doping.length > 0) {
-                return "purple";
+                return color_doping;
             } else {
-                return "lightgreen";
+                return color_no_doping;
             }
         })
-        //.attr("fill", "black")
         .on("mouseover", (d, i) => {
-            tooltip
-                .text(`Year: ${d.Year}
-Time: ${d.Time}
-Allegation: ${d.Doping.length === 0 ? "None" : d.Doping}`)
-                .style("visibility", "visible")
-                .attr("style", "left:" + xScale(d.Year) + "px; top:" + yScale(new Date(dateTimePrefix + d.Time)) + "px;")
-                .attr("data-year", d.Year)
+            let keys = ["Name", "Year", "Time", "Place", "Doping"];
+            let html = keys.reduce((prev, curr) => {
+if (d[curr].length == 0) {
+    return prev;
+} else if (curr == "URL") {
+    return prev + `<div><strong>${curr}:</strong>&nbsp<a href="${d[curr]}">${d[curr]}</a></div>`;
+} else 
+    return prev + `<div><strong>${curr}:</strong>&nbsp${d[curr]}</div>`;
+}, "");
+            let elem = document.getElementById("tooltip");
+            elem.innerHTML = html;
+            elem.style.visibility = "visible";
+            tooltip.attr("style", "left:" + xScale(d.Year) + "px; top:" + yScale(new Date(dateTimePrefix + d.Time)) + "px;");
+            tooltip.attr("data-year", d.Year);
+
+
         })
         .on("mouseout", (d, i) => { 
-            tooltip.style("visibility", "hidden")
+            let elem = document.getElementById("tooltip");
+            elem.style.visibility = "hidden";
         })
 
         ;

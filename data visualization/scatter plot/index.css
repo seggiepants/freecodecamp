@@ -7,10 +7,30 @@
 .dot {
     background-color: black;
     border: 1px solid black;
+    opacity: 75%;
 }
 
 .tooltip {
     background-color: palegoldenrod;
     display: inline-block;
     position: absolute;
+    padding: 4px;
+    font-size: smaller;
+}
+
+#legend {
+    border: 1px solid black;
+    padding: 4px;
+    font-size: small;
+    display: inline-block;
+    line-height: 2;
+    position: absolute;
+}
+
+.square {
+    width: 1rem;
+    height: 1rem;
+    background-color: black;
+    border: 1px solid black;
+    display: inline-block;
 }
