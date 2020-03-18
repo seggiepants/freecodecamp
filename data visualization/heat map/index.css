@@ -1,0 +1,32 @@
+#title, #description {
+    text-align: center;
+    width: 100%;
+    font-size: larger;
+}
+
+#description {
+    font-size: initial;
+}
+
+.tooltip {
+    background-color: palegoldenrod;
+    display: inline-block;
+    position: absolute;
+    padding: 4px;
+    font-size: smaller;
+}
+
+#legend {
+    border: 1px solid black;
+    padding: 4px;
+    font-size: small;
+    display: inline-block;
+    line-height: 2;
+    position: absolute;
+}
+
+.cell {
+    background-color: purple;
+    border: none;
+    display: inline-block;
+}
