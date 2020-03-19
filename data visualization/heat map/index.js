@@ -3,9 +3,62 @@ const h = 600;
 // const url = "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json";
 const url = "data/global-temperature.json";
 
+function rgb(r, g, b) {
+    return ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff)
+}
+
+function r(color) { 
+    return (color & 0xff0000) >> 16;
+}
+
+function g(color) { 
+    return (color & 0x00ff00) >> 8;
+}
+
+function b(color) {
+    return (color & 0xff);
+}
+
+function buildColorMap(numColors, colorStages) {
+    let stepSize = numColors / (colorStages.length - 1);
+    let step = 0;
+    let current = 0;
+    let next = 1;
+    let rgbA, rgbB, rgbC, rA, gA, bA, rB, gB, bB, rC, bC, gC;
+    let ret=[];
+    for(let i = 0; i < numColors; i++) {
+        if (step >= stepSize) { 
+            current++;
+            next ++;
+            step = 0;
+        }
+        rgbA = colorStages[current];
+        rgbB = colorStages[next];
+        rA = r(rgbA);
+        bA = b(rgbA);
+        gA = g(rgbA);
+
+        rB = r(rgbB);
+        bB = b(rgbB);
+        gB = g(rgbB);
+
+        rC = (step * rA + (stepSize - step) * rB) / stepSize;
+        gC = (step * gA + (stepSize - step) * gB) / stepSize;
+        bC = (step * bA + (stepSize - step) * bB) / stepSize;
+        
+        rgbC = rgb(rC, gC, bC);
+        ret[i] = rgbC;
+        step++;
+    }
+    console.log(ret);
+    return ret;
+}
+
 function createHeatMap(data) {
     const title = "Surface Temperature over Time";
-
+    const colorSteps = [0x0000ff, 0x00ff00, 0xffff00, 0xff0000 ];
+    const numColors = 32;
+    const colorMap = buildColorMap(numColors, colorSteps);
     d3.select("body")
         .append("p")
         .attr("id", "title")
@@ -55,6 +108,7 @@ function createHeatMap(data) {
     const maxMonth= d3.max(data.monthlyVariance, (d) => d.month + 0) - 1;
     const minVariance = d3.min(data.monthlyVariance, (d) => d.variance);
     const maxVariance = d3.max(data.monthlyVariance, (d) => d.variance);
+    console.log(`${minVariance}, ${maxVariance}`);
     const description = `${minYear} - ${maxYear}: base temperature ${baseTemp}&deg;C`;
     document.getElementById("description").innerHTML = description;
 
@@ -106,11 +160,19 @@ console.log(`w = ${cellW}, h = ${cellH}`);
         .attr("data-year", (d, i) => d.year)
         .attr("data-temp", (d, i) => baseTemp + d.variance)
         .attr("fill", (d, i) => {
+            /*
             let r = Math.floor(Math.random() * 256);
             let g = Math.floor(Math.random() * 256);
             let b = Math.floor(Math.random() * 256);
             let rgb = `rgb(${r},${g},${b})`;
-            return rgb;
+            */
+            let cellColor = colorMap[Math.floor((d.variance - minVariance)/(maxVariance - minVariance) * numColors)];
+            console.log(cellColor);
+            //console.log(`variance(${d.variance}) = ${rgb}, ${(d.variance - minVariance) / maxVariance} ${d.variance}, ${d.minVariance}, ${d.maxVariance}`)
+            // console.log(`${minVariance}, ${maxVariance}, ${d.variance}, ${Math.floor(((d.variance - minVariance)/(maxVariance - minVariance)) * numColors)}`);
+            //rgb = "yellow";
+            console.log(`${r(cellColor)},${g(cellColor)},${b(cellColor)}`);
+            return `rgb(${r(cellColor)},${g(cellColor)},${b(cellColor)})`;
         })
         .on("mouseover", (d, i) => {
             let keys = ["year", "month", "variance"];
