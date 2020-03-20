@@ -20,7 +20,7 @@
     border: 1px solid black;
     padding: 4px;
     font-size: small;
-    display: inline-block;
+    display: block;
     line-height: 2;
     position: absolute;
 }
@@ -29,4 +29,10 @@
     background-color: purple;
     border: none;
     display: inline-block;
+}
+
+.legend_cell {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
 }
