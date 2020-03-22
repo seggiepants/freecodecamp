@@ -36,6 +36,7 @@ function createChoroplethMap(data) {
         .append("svg")
         .attr("width", w)
         .attr("height", h)
+        .attr("class", "counties");
         ;
 
     const tooltip = d3.select("body")
@@ -52,15 +53,21 @@ function createChoroplethMap(data) {
         .append("div")
         .attr("id", "legend")
         ;
+
+    console.log(data);
+    const minX = Math.min(data.counties.data.bbox[0], data.counties.data.bbox[2]);
+    const maxX = Math.max(data.counties.data.bbox[0], data.counties.data.bbox[2]);
+    const minY = Math.min(data.counties.data.bbox[1], data.counties.data.bbox[3]);
+    const maxY = Math.max(data.counties.data.bbox[1], data.counties.data.bbox[3]);
+    console.log(`x = ${minX} => ${maxX}, y = ${minY} => ${maxY}`);
     /*
-    const dateTimePrefix = "01-01-1970 00:";
-    const minYear = d3.min(data, (d) => d.Year);
-    const maxYear = d3.max(data, (d) => d.Year);
+    const maxX = d3.max(data, (d) => d.Year);
     // const minTime = Math.min(new Date(dateTimePrefix + "00:00"), d3.min(data, (d) => new Date(dateTimePrefix + d.Time)));
     const minTime = d3.min(data, (d) => new Date(dateTimePrefix + d.Time));
     const maxTime = d3.max(data, (d) => new Date(dateTimePrefix + d.Time));
 
     */
+
     const padding = 60;
     const xScale = d3.scaleLinear()
         .domain([data.counties.data.bbox[0], data.counties.data.bbox[2]])
@@ -71,7 +78,7 @@ function createChoroplethMap(data) {
     .domain([data.counties.data.bbox[1], data.counties.data.bbox[3]])
         .range([padding, h - padding])
         ;
-    
+    /**/
     /*
     const xAxis = d3.axisBottom(xScale)
         .tickFormat(d3.format("d"))
@@ -92,26 +99,42 @@ function createChoroplethMap(data) {
         .attr("id", "y-axis")
         .call(yAxis)
         ;
+    */    
+    //const center = [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
+    // const projection = d3.geoMercator();//.translate([w / 2, 0]).center(center);
+    // const projection = d3.geoMercator(); //AlbersUsa(); //.scale(w);    
+    const path = d3.geoPath(); //.projection(projection);
+    /*
+    console.log(data.counties.data);
+    console.log("a");
+    const countiesTopo = topojson.feature(data, data.counties.data.objects);
+    console.log("b");
+    const path = d3.geoPath().projection(projection);
+    console.log(countiesTopo);
+    const otherTopo = d3.geoPath(data.counties.data.objects.states);
+    console.log(otherTopo);
     */
-    svg.selectAll("polygon")
-        .data(data.counties.data.objects.counties.geometries)
+
+    
+    counties = svg
+        .append("g")
+        .selectAll("path")
+        .data(topojson.feature(data.counties.data, data.counties.data.objects.counties).features)
         .enter()
-        .append("polygon")
-        .attr("points", (d, i) => {
-            let points = "";
-            if (d.type == "Polygon") {                
-                for(let i = 0; i < d.arcs.length; i++) {
-                    for(let j = 0; j <data.counties.data.arcs[i].length; j++ ) {
-                        points += `${xScale(data.counties.data.arcs[i][j][0])},${yScale(data.counties.data.arcs[i][j][1])} `;
-                    }
-                }
-            }
-            console.log(points);
-            return points;
-        })
-        .attr("fill", "blue")
+        .append("path")
         .attr("class", "county")
+        .attr("data-fips", (d, i) => { d.id })
+        .attr("d", path)
         ;
+    
+    /*counties.selectAll('.county')
+        .data(countiesTopo.features)
+        .enter()
+        .append('path')
+        .attr('class', 'county')
+        .attr('d', path)  
+    ; 
+    */               
     /*
         .attr("cx", (d, i) => xScale(d.Year))
         .attr("cy", (d, i) => yScale(new Date(dateTimePrefix + d.Time)))
