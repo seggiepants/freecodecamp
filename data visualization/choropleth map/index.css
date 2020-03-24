@@ -12,7 +12,7 @@
     border: 1px solid black;
     padding: 4px;
     font-size: small;
-    display: inline-block;
+    display: block;
     line-height: 2;
     position: absolute;
 }
@@ -29,4 +29,15 @@
     position: absolute;
     padding: 4px;
     font-size: smaller;
+}
+
+.legend_cell {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+}
+
+.states {
+    fill: none;
+    stroke:black;
 }

@@ -1,5 +1,24 @@
-const w = 800;
+const w = 960;
 const h = 600;
+
+let color_map = [
+    {r: 0, g: 0, b: 0x33}, // 0
+    {r: 0, g: 0x00, b: 0x66}, // 1
+    {r: 0, g: 0x00, b: 0x99}, // 2
+    {r: 0x0, g: 0x33, b: 0x99}, // 3
+    {r: 0x66, g: 0, b: 0x99}, // 4
+    {r: 0x66, g: 0, b: 0x66}, // 5
+    {r: 0x99, g: 0, b: 0x66}, // 6
+    {r: 0xFF, g: 0, b: 0x66}, // 7
+    {r: 0xFF, g: 0, b: 0x33}, // 8
+    {r: 0xFF, g: 0x33, b: 0}, // 9
+    {r: 0xFF, g: 0xCC, b: 0}, // A
+    {r: 0xFF, g: 0xFF, b: 0}, // B
+    {r: 0xCC, g: 0xFF, b: 0x33}, // C
+    {r: 0x66, g: 0xFF, b: 0}, // D
+    {r: 0x33, g: 0xCC, b: 0x33}, // E
+    {r: 0x00, g: 0xFF, b: 0}, // F
+]
 
 let files = {
     counties: {
@@ -48,73 +67,11 @@ function createChoroplethMap(data) {
 
     let elem = document.getElementById("tooltip");
     elem.style.visibility = "hidden";
+    
+    const minEducation = d3.min(data.education.data, (d) => Number.parseFloat(d.bachelorsOrHigher) || 0.0);
+    const maxEducation = d3.max(data.education.data, (d) => Number.parseFloat(d.bachelorsOrHigher) || 0.0);
 
-    d3.select("body")
-        .append("div")
-        .attr("id", "legend")
-        ;
-
-    console.log(data);
-    const minX = Math.min(data.counties.data.bbox[0], data.counties.data.bbox[2]);
-    const maxX = Math.max(data.counties.data.bbox[0], data.counties.data.bbox[2]);
-    const minY = Math.min(data.counties.data.bbox[1], data.counties.data.bbox[3]);
-    const maxY = Math.max(data.counties.data.bbox[1], data.counties.data.bbox[3]);
-    console.log(`x = ${minX} => ${maxX}, y = ${minY} => ${maxY}`);
-    /*
-    const maxX = d3.max(data, (d) => d.Year);
-    // const minTime = Math.min(new Date(dateTimePrefix + "00:00"), d3.min(data, (d) => new Date(dateTimePrefix + d.Time)));
-    const minTime = d3.min(data, (d) => new Date(dateTimePrefix + d.Time));
-    const maxTime = d3.max(data, (d) => new Date(dateTimePrefix + d.Time));
-
-    */
-
-    const padding = 60;
-    const xScale = d3.scaleLinear()
-        .domain([data.counties.data.bbox[0], data.counties.data.bbox[2]])
-        .range([padding, w - padding])
-        ;
-
-    const yScale = d3.scaleLinear()
-    .domain([data.counties.data.bbox[1], data.counties.data.bbox[3]])
-        .range([padding, h - padding])
-        ;
-    /**/
-    /*
-    const xAxis = d3.axisBottom(xScale)
-        .tickFormat(d3.format("d"))
-    ;
-
-    const yAxis = d3.axisLeft(yScale)
-        .tickFormat(d3.timeFormat("%M:%S"))
-        ;
-
-    svg.append("g")
-        .attr("transform", "translate(0, " + (h - padding) + ")")
-        .attr("id", "x-axis")
-        .call(xAxis)
-        ;
-
-    svg.append("g")
-        .attr("transform", "translate(" + padding + ", 0)")
-        .attr("id", "y-axis")
-        .call(yAxis)
-        ;
-    */    
-    //const center = [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
-    // const projection = d3.geoMercator();//.translate([w / 2, 0]).center(center);
-    // const projection = d3.geoMercator(); //AlbersUsa(); //.scale(w);    
-    const path = d3.geoPath(); //.projection(projection);
-    /*
-    console.log(data.counties.data);
-    console.log("a");
-    const countiesTopo = topojson.feature(data, data.counties.data.objects);
-    console.log("b");
-    const path = d3.geoPath().projection(projection);
-    console.log(countiesTopo);
-    const otherTopo = d3.geoPath(data.counties.data.objects.states);
-    console.log(otherTopo);
-    */
-
+    const path = d3.geoPath(); 
     
     counties = svg
         .append("g")
@@ -123,58 +80,85 @@ function createChoroplethMap(data) {
         .enter()
         .append("path")
         .attr("class", "county")
-        .attr("data-fips", (d, i) => { d.id })
-        .attr("d", path)
-        ;
-    
-    /*counties.selectAll('.county')
-        .data(countiesTopo.features)
-        .enter()
-        .append('path')
-        .attr('class', 'county')
-        .attr('d', path)  
-    ; 
-    */               
-    /*
-        .attr("cx", (d, i) => xScale(d.Year))
-        .attr("cy", (d, i) => yScale(new Date(dateTimePrefix + d.Time)))
-        .attr("r", 6)
-        .attr("class", "dot")
-        .attr("data-xvalue", (d, i) => d.Year)
-        .attr("data-yvalue", (d, i) => new Date(dateTimePrefix + d.Time))
+        .attr("data-fips", (d, i) => d.id)
+        .attr("data-education", (d, i) => data.education.data.filter(e => e.fips === d.id)[0].bachelorsOrHigher || 0.0)
+        .attr("data-state", (d, i) => data.education.data.filter(e => e.fips === d.id)[0].state || "")
+        .attr("data-name", (d, i) => data.education.data.filter(e => e.fips === d.id)[0].area_name || "")
         .attr("fill", (d, i) => {
-            if (d.Doping.length > 0) {
-                return color_doping;
-            } else {
-                return color_no_doping;
-            }
+            let bachelorsOrHigher = parseFloat(data.education.data.filter(e => e.fips === d.id)[0].bachelorsOrHigher || 0.0);
+            let targetColor = color_map[Math.max(0, Math.min(color_map.length - 1, Math.floor(((bachelorsOrHigher - minEducation) / (maxEducation - minEducation)) * color_map.length)))];
+            return `rgb(${targetColor.r}, ${targetColor.g}, ${targetColor.b})`;
         })
         .on("mouseover", (d, i) => {
-            let keys = ["Name", "Year", "Time", "Place", "Doping"];
-            let html = keys.reduce((prev, curr) => {
-if (d[curr].length == 0) {
-    return prev;
-} else if (curr == "URL") {
-    return prev + `<div><strong>${curr}:</strong>&nbsp<a href="${d[curr]}">${d[curr]}</a></div>`;
-} else 
-    return prev + `<div><strong>${curr}:</strong>&nbsp${d[curr]}</div>`;
-}, "");
+            let fips = d.id;
+            let edu = data.education.data.filter(e => e.fips === d.id)[0];
+            let html = `<div>${edu["area_name"] || "unknown"}, ${edu["state"] || "unknown"}: ${edu["bachelorsOrHigher"] || "error"}%</div>`;
             let elem = document.getElementById("tooltip");
             elem.innerHTML = html;
             elem.style.visibility = "visible";
-            tooltip.attr("style", "left:" + xScale(d.Year) + "px; top:" + yScale(new Date(dateTimePrefix + d.Time)) + "px;");
-            tooltip.attr("data-year", d.Year);
-
-
+            tooltip
+                .attr("style", `left:${d3.event.pageX + 32}px; top:${d3.event.pageY + 16}px;`);
+            tooltip
+                .attr("data-education", edu.bachelorsOrHigher || 0.0);
         })
         .on("mouseout", (d, i) => { 
             let elem = document.getElementById("tooltip");
             elem.style.visibility = "hidden";
         })
-
+        .attr("d", path)
         ;
-    */
-   console.log("Create called");
+    
+    svg
+        .datum(topojson.mesh(data.counties.data, data.counties.data.objects.states))
+        .append("path")
+        .attr("class", "states")
+        .attr("d", path);
+
+    let legendW = 16 * color_map.length;
+    let colorScale = d3.scaleLinear()
+        .domain([minEducation, maxEducation])
+        .range([0, legendW]);
+    const colorAxis = d3.axisBottom(colorScale);
+    const legend = d3.selectAll("body")
+        .append("svg")
+        .attr("id", "legend")
+        .attr("width", legendW + 8 + "px")
+        .attr("height", "64px")
+        ;
+    
+    legend
+        .append("text")
+        .attr("x", legendW / 2)
+        .attr("y", 56)
+        .style("text-anchor", "middle")
+        .text("Bachelors or Higher Education %")
+        ;
+
+    legend
+        .append("g")
+        .attr("transform", "translate(0, 20)")
+        .attr("id", "color-axis")
+        .call(colorAxis)
+        ;
+
+   legend
+        .selectAll("rect")
+        .data(color_map)
+        .enter()
+        .append("rect")
+        .attr("x", (d, i) => i * 16 + "px")
+        .attr("y", "0px")
+        .attr("width", "16px")
+        .attr("height", "16px")        
+        .attr("fill", (d, i) => {
+            return `rgb(${d.r},${d.g},${d.b})`;            
+        })
+        .attr("class", "legend_cell")
+        .style("background-color", (d, i) => {
+            return `rgb(${d.r},${d.g},${d.b})`;            
+        })
+        ;
+
 }
 
 
