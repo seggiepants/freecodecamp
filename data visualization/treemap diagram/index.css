@@ -1,0 +1,36 @@
+#title, #description {
+    text-align: center;
+    width: 100%;
+    font-size: larger;
+}
+
+#description {
+    font-size: initial;
+}
+
+.tooltip {
+    background-color: palegoldenrod;
+    display: inline-block;
+    position: absolute;
+    padding: 4px;
+    font-size: smaller;
+}
+
+#legend {
+    border: 1px solid black;
+    padding: 4px;
+    font-size: small;
+    display: block;
+    line-height: 2;
+    position: absolute;
+}
+
+.legend_cell {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+}
+
+.tile {
+    color: black;
+}
