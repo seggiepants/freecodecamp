@@ -2,6 +2,20 @@ const w = 800;
 const h = 600;
 const padding = 60;
 
+let color_map = [
+    {r: 0xCC, g: 0xFF, b: 0}, // 0
+    {r: 0xCC, g: 0x66, b: 0xFF}, // 1
+    {r: 0xFF, g: 0xFF, b: 0x66}, // 2
+    {r: 0x66, g: 0xFF, b: 0x99}, // 3
+    {r: 0xFF, g: 0x66, b: 0xCC}, // 4
+    {r: 0x66, g: 0xCC, b: 0xFF}, // 5
+    {r: 0xFF, g: 0x99, b: 0x66}, // 6
+    {r: 0xFF, g: 0xCC, b: 0xFF}, // 7
+]
+
+let category_colors = {};
+let color_idx = 0;
+
 // const folder_prefix = "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/";
 const folder_prefix = "data/";
 
@@ -97,12 +111,38 @@ function createTreeMap(data, title, description) {
             .attr("data-value", (d, i) => d.data.value)
             .style("stroke", "black")
             .style("fill", (d, i) => {
-                r = Math.floor(Math.random() * 256);
-                g = Math.floor(Math.random() * 256);
-                b = Math.floor(Math.random() * 256);
+                let r;
+                let g;
+                let b;
+                if (category_colors.hasOwnProperty(d.data.category)){
+                    r = category_colors[d.data.category].r;
+                    g = category_colors[d.data.category].g;
+                    b = category_colors[d.data.category].b;
+                } else {
+                    r = color_map[color_idx].r;
+                    g = color_map[color_idx].g;
+                    b = color_map[color_idx].b;
+                    color_idx = (color_idx + 1) % color_map.length;
+                    category_colors[d.data.category] = {r: r, g: g, b: b,};
+                }
                 return `rgb(${r},${g},${b})`;
             })
             .attr("class", "tile")
+            .on("mouseover", (d, i) => {
+                console.log("mouseover");
+                let html = `<div>${d.data.category}:&nbsp${d.data.name} = ${d.data.value}</div>`;
+                let elem = document.getElementById("tooltip");
+                elem.innerHTML = html;
+                elem.style.visibility = "visible";
+                tooltip.attr("style", `left:${d3.event.pageX + 16}px; top:${d3.event.pageY + 8}px;`);
+                tooltip.attr("data-value", d.data.value);
+            })
+            .on("mouseout", (d, i) => { 
+                console.log("mouseout");
+                let elem = document.getElementById("tooltip");
+                elem.style.visibility = "hidden";
+            })
+            ;
 
     // and to add the text labels
     svg
@@ -115,131 +155,53 @@ function createTreeMap(data, title, description) {
             .attr("width", d=>(d.x1 - d.x0) + "px")
             .attr("height", d=>(d.y1 - d.y0) + "px")
             .text(d => d.data.name)
-            //.attr("font-size", "15px")
-            //.attr("fill", "black")
-        ;
-    /*
-    const padding = 60;
-    const xScale = d3.scaleLinear()
-        .domain([minYear, maxYear])
-        .range([padding, w - padding])
-        ;
-
-    const yScale = d3.scaleTime()
-        .domain([new Date(minYear, maxMonth - 1, 28), new Date(minYear, minMonth - 1, 1 )])
-        .range([padding, h - padding])
-        ;
-
-    const xAxis = d3.axisBottom(xScale)
-        .tickFormat(d3.format("d"))
-    ;
-
-    const yAxis = d3.axisLeft(yScale)
-        .tickFormat(d3.timeFormat("%B"))
-        ;
-
-    const cellW = xScale(minYear + 1) - xScale(minYear);
-    const cellH = yScale(new Date(minYear, minMonth - 1, 1)) - yScale(new Date(minYear, minMonth, 1));
-
-    svg.append("g")
-        .attr("transform", "translate(0, " + (h - padding) + ")")
-        .attr("id", "x-axis")
-        .call(xAxis)
-        ;
-
-    svg.append("g")
-        // -cellH/2 so that the test thinks the ticks are aligned correctly.
-        // yeah it is a hack, but I think the test is flawed.
-        .attr("transform", "translate(" + padding + ", " + -cellH/2 + ")")
-        .attr("id", "y-axis")
-        .call(yAxis)
-        ;
-        
-    svg.selectAll("rect")
-        .data(data.monthlyVariance)
-        .enter()
-        .append("rect")
-        .attr("x", (d, i) => xScale(d.year))
-        .attr("y", (d, i) => yScale(new Date(minYear, d.month - 1, 1)) - cellH)
-        .attr("width", cellW + "px")
-        .attr("height", cellH + "px")
-        .attr("class", "cell")
-        .attr("data-month", (d, i) => d.month - 1)
-        .attr("data-year", (d, i) => d.year)
-        .attr("data-temp", (d, i) => baseTemp + d.variance)
-        .attr("fill", (d, i) => {
-            let cellColor = colorMap[Math.floor((d.variance - minVariance)/(maxVariance - minVariance) * numColors)];
-            return `rgb(${r(cellColor)},${g(cellColor)},${b(cellColor)})`;
-        })
-        .on("mouseover", (d, i) => {
-            let keys = ["year", "month", "variance"];
-            let html = keys.reduce((prev, curr) => {
-if (d[curr].length == 0) {
-    return prev;
-} else if (curr == "URL") {
-    return prev + `<div><strong>${curr}:</strong>&nbsp<a href="${d[curr]}">${d[curr]}</a></div>`;
-} else 
-    return prev + `<div><strong>${curr}:</strong>&nbsp${d[curr]}</div>`;
-}, "");
-            let elem = document.getElementById("tooltip");
-            elem.innerHTML = html;
-            elem.style.visibility = "visible";
-            tooltip.attr("style", `left: ${xScale(d.year)}px; top: ${(padding - 4) + yScale(new Date(minYear, d.month, 1))}px;`);
-            tooltip.attr("data-year", d.year);
-        })
-        .on("mouseout", (d, i) => { 
-            let elem = document.getElementById("tooltip");
-            elem.style.visibility = "hidden";
-        })
-        ;
-
-        let legendW = 16 * (numColors + 1);
-        let colorScale = d3.scaleLinear()
-            .domain([minVariance, maxVariance])
-            .range([0, legendW]);
-
-        const colorAxis = d3.axisBottom(colorScale);
+       
+        let legend_height = (Object.keys(category_colors).length + 1) * 16;
+        console.log(Object.keys(category_colors).length);
         const legend = d3.selectAll("body")
             .append("svg")
             .attr("id", "legend")
-            .attr("width", legendW + 8 + "px")
-            .attr("height", "64px")
-            ;
-        legend
-            .append("g")
-            .attr("transform", "translate(0, 20)")
-            .attr("id", "color-axis")
-            .call(colorAxis)
-            ;
-        legend
-            .append("text")
-            .attr("x", legendW / 2)
-            .attr("y", 56)
-            .style("text-anchor", "middle")
-            .html("Variance in &deg;C")
+            .attr("width", w + "px")
+            .attr("height", legend_height + "px")
             ;
 
-console.log(`${minVariance}, ${maxVariance}`);
         legend
             .selectAll("rect")
-            .data(colorMap)
+            .data(Object.keys(category_colors))
             .enter()
             .append("rect")
-            .attr("x", (d, i) => i * 16 + "px")
-            .attr("y", "0px")
+            .attr("x", "8px")
+            .attr("y", (d, i) => (i + 1) * 16 + 8 + "px")            
             .attr("width", "16px")
             .attr("height", "16px")
+            .attr("class", "legend-item")
             .attr("fill", (d, i) => {
-                return `rgb(${r(d)},${g(d)},${b(d)})`;            
+                let r = category_colors[d].r
+                return `rgb(${category_colors[d].r},${category_colors[d].g},${category_colors[d].b})`;            
             })
-
-        .attr("class", "legend_cell")
-        .style("background-color", (d, i) => {
-            return `rgb(${r(d)},${g(d)},${b(d)})`;            
-        })
+            ;
+        
+        legend
+            .selectAll("text")
+            .data(Object.keys(category_colors))
+            .enter()
+            .append("text")
+            .attr("x", "32px")
+            .attr("y", (d, i) => (i + 2) * 16 + "px")
+            .attr("width", (d, i) => (w - 32) + "px")
+            .attr("height", "16px")
+            .text((d, i) => d)            
+            ;
+        
+        legend
+            .append("text")
+            .attr("x", "0px")
+            .attr("y", "16px")
+            .attr("width", w + "px")
+            .attr("height", "16px")
+            .text("Categories")
             ;
 
-*/
 }
 
 function cleanUp() {
@@ -251,6 +213,9 @@ function cleanUp() {
             elem.parentElement.removeChild(elem);
         }
     }
+
+    category_colors = {};
+    color_idx = 0;
 }
 
 function loadFile(url) {
