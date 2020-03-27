@@ -73,6 +73,8 @@ function createTreeMap(data, title, description) {
         .attr("id", "graph")
         ;
 
+    buildGradients(svg);
+
     const tooltip = d3.select("body")
         .append("div")
         .attr("class", "tooltip")
@@ -125,7 +127,8 @@ function createTreeMap(data, title, description) {
                     color_idx = (color_idx + 1) % color_map.length;
                     category_colors[d.data.category] = {r: r, g: g, b: b,};
                 }
-                return `rgb(${r},${g},${b})`;
+                // return `rgb(${r},${g},${b})`;
+                return `url(#svgGradient_${r}_${g}_${b})`;
             })
             .attr("class", "tile")
             .on("mouseover", (d, i) => {
@@ -145,17 +148,28 @@ function createTreeMap(data, title, description) {
             ;
 
     // and to add the text labels
+    let cell_x = 0;
+    let cell_y = 0;
     svg
         .selectAll("text")
         .data(root.leaves())
         .enter()
             .append("text")
-            .attr("x", d => (d.x0 + 5) + "px")    // +10 to adjust position (more right)
-            .attr("y", d => (d.y0 + 20) + "px")    // +20 to adjust position (lower)
-            .attr("width", d=>(d.x1 - d.x0) + "px")
-            .attr("height", d=>(d.y1 - d.y0) + "px")
-            .text(d => d.data.name)
-       
+            .attr("x", d => {
+                cell_x = d.x0 + 8;
+                return cell_x + "px";
+            })
+            .attr("y", d => {
+                cell_y = d.y0 + 16;
+                return cell_y + "px";
+            })
+            .attr("width", d=>(d.x1 - d.x0) - 16 + "px")
+            .attr("height", d=>(Math.abs(d.y0 - d.y1)) - 32 + "px")
+            .attr("text-anchor", "start")
+            .attr("font-size", "smaller")
+            .text((d, i) => d.data.name)
+            ;
+        
         let legend_height = (Object.keys(category_colors).length + 1) * 16;
         console.log(Object.keys(category_colors).length);
         const legend = d3.selectAll("body")
@@ -177,7 +191,9 @@ function createTreeMap(data, title, description) {
             .attr("class", "legend-item")
             .attr("fill", (d, i) => {
                 let r = category_colors[d].r
-                return `rgb(${category_colors[d].r},${category_colors[d].g},${category_colors[d].b})`;            
+                // return `rgb(${category_colors[d].r},${category_colors[d].g},${category_colors[d].b})`;
+                return `url(#svgGradient_${category_colors[d].r}_${category_colors[d].g}_${category_colors[d].b})`;
+
             })
             ;
         
@@ -216,6 +232,35 @@ function cleanUp() {
 
     category_colors = {};
     color_idx = 0;
+}
+
+function buildGradients(svg) {
+    let color_keys = Object.keys(color_map);
+    let defs = svg.append("defs");
+    for (let i = 0; i < color_keys.length; i++) {
+        let r = color_map[color_keys[i]].r;
+        let g = color_map[color_keys[i]].g;
+        let b = color_map[color_keys[i]].b;
+        
+        let gradient = defs.append("radialGradient")
+        .attr("id", `svgGradient_${r}_${g}_${b}`)
+        .attr("x1", "0%")
+        .attr("x2", "100%")
+        .attr("y1", "0%")
+        .attr("y2", "100%");
+
+    gradient.append("stop")
+        .attr('class', 'start')
+        .attr("offset", "0%")
+        .attr("stop-color", `rgb(${r}, ${g}, ${b})`)
+        .attr("stop-opacity", 1);
+
+        gradient.append("stop")
+        .attr('class', 'end')
+        .attr("offset", "100%")
+        .attr("stop-color", `rgb(${r/2}, ${g/2}, ${b/2})`)
+        .attr("stop-opacity", 1);
+    }
 }
 
 function loadFile(url) {
