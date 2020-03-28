@@ -40,12 +40,13 @@ const urls = {
 function getTileSum(node) {
     if (node.hasOwnProperty("value")) {
         console.log(`${node.name} - ${node.category} = ${node.value}`);
-        return node.value;
+        return parseFloat(node.value);
     } else if (node.hasOwnProperty("children")) {
         let runningTotal = 0.0;
         for(let i = 0; i < node.children.length; i++) {
             runningTotal += getTileSum(node.children[i]);
         }
+        console.log(`runningTotal ${runningTotal}`);
         return runningTotal;
     } else {
         return 0;
@@ -89,16 +90,17 @@ function createTreeMap(data, title, description) {
 
     // Give the data to this cluster layout:
     let root = d3.hierarchy(data).sum(d => getTileSum(d));
-    console.log(data);
-    console.log(root);
+    // console.log(data);
+    // console.log(root);
     // Then d3.treemap computes the position of each element of the hierarchy
-    d3.treemap()
-   .size([w, h])
-   // .padding(padding)
-   (root);
+    d3
+        .treemap()
+        .size([w, h])
+        // .padding(padding)
+        (root);
 
     // use this information to add rectangles:
-    console.log(root.leaves());
+    // console.log(root.leaves());
     svg
         .selectAll("rect")
         .data(root.leaves())
@@ -148,6 +150,7 @@ function createTreeMap(data, title, description) {
             ;
 
     // and to add the text labels
+    /*
     let cell_x = 0;
     let cell_y = 0;
     svg
@@ -169,6 +172,13 @@ function createTreeMap(data, title, description) {
             .attr("font-size", "smaller")
             .text((d, i) => d.data.name)
             ;
+    */
+            /*
+        svg
+            .selectAll("text")
+            .call(wrap, 50)            
+            ;
+            */
         
         let legend_height = (Object.keys(category_colors).length + 1) * 16;
         console.log(Object.keys(category_colors).length);
@@ -219,6 +229,42 @@ function createTreeMap(data, title, description) {
             ;
 
 }
+
+function wrap(text, width) {
+    console.log(text);
+    text.each(() => {
+    let text = d3.select(this);
+    console.log(text.text());
+    let words = text.text().split(/\s+/).reverse();
+    console.log(words);
+    let word;
+    let line = [];
+    let lineNumber = 0;
+    let lineHeight = 1.1; // ems
+    let y = text.attr("y");
+    let dy = parseFloat(text.attr("dy"));
+    let tspan = text.text(null)
+    .append("tspan")
+    .attr("x", 0)
+    .attr("y", y)
+    .attr("dy", dy + "em");
+    while (word = words.pop()) {
+    line.push(word);
+    tspan.text(line.join(" "));
+    if (tspan.node().getComputedTextLength() > width) {
+        line.pop();
+        tspan.text(line.join(" "));
+        line = [word];
+        tspan = text
+        .append("tspan")
+        .attr("x", 0)
+        .attr("y", y)
+        .attr("dy", ++lineNumber * lineHeight + dy + "em")
+        .text(word);
+    }
+    }
+});
+}  
 
 function cleanUp() {
     const elementIds = ["title", "description", "svg", "tooltip", "legend"];
