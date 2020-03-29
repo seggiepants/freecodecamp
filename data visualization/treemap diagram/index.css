@@ -8,6 +8,11 @@
     font-size: initial;
 }
 
+.buttons {
+    text-align: center;
+    width: 100%;
+}
+
 .tooltip {
     background-color: palegoldenrod;
     display: inline-block;
@@ -23,6 +28,7 @@
     display: block;
     line-height: 2;
     position: absolute;
+    margin-bottom: 2rem;
 }
 
 .legend_cell {

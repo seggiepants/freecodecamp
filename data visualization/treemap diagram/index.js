@@ -1,5 +1,7 @@
+// Constants and data.
 const w = 800;
 const h = 600;
+const legend_cols = 2;
 const padding = 60;
 
 let color_map = [
@@ -11,14 +13,20 @@ let color_map = [
     {r: 0x66, g: 0xCC, b: 0xFF}, // 5
     {r: 0xFF, g: 0x99, b: 0x66}, // 6
     {r: 0xFF, g: 0xCC, b: 0xFF}, // 7
+    {r: 0x66, g: 0x66, b: 0}, // 8
+    {r: 0, g: 0x66, b: 0xCC}, // 9
+    {r: 0x33, g: 0x99, b: 0}, // A
+    {r: 0xFF, g: 0, b: 0x66 }, // B
+    {r: 0xFF, g: 0xFF, b: 0xFF}, // C
+    {r: 0xCC, g: 0xCC, b: 0x99}, // D
+    {r: 0xCC, g: 0x66, b: 0x33}, // E
+    {r: 0xFF, g: 0x66, b: 0xFF}, // F
 ]
-
-let category_colors = {};
-let color_idx = 0;
 
 // const folder_prefix = "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/";
 const folder_prefix = "data/";
 
+// The urls we have access to.
 const urls = {
     kickstarter: {
         url: folder_prefix + "kickstarter-funding-data.json",
@@ -37,22 +45,30 @@ const urls = {
     }
 };
 
+// Globals
+let category_colors = {};
+let color_idx = 0;
+
+// Functions
+// -----------
+
+// Get the sum of values for a given tile/sub-tree.
 function getTileSum(node) {
     if (node.hasOwnProperty("value")) {
-        console.log(`${node.name} - ${node.category} = ${node.value}`);
         return parseFloat(node.value);
     } else if (node.hasOwnProperty("children")) {
         let runningTotal = 0.0;
         for(let i = 0; i < node.children.length; i++) {
             runningTotal += getTileSum(node.children[i]);
         }
-        console.log(`runningTotal ${runningTotal}`);
         return runningTotal;
     } else {
         return 0;
     }
 }
 
+// Main function of the page. Draw a treemap with the given data, title, and description
+// using the D3 library.
 function createTreeMap(data, title, description) {
     
     d3.select("body")
@@ -68,7 +84,7 @@ function createTreeMap(data, title, description) {
         ;
 
     const svg = d3.select("body")
-        .append("svg")
+        .append("svg")        
         .attr("width", w)
         .attr("height", h)
         .attr("id", "graph")
@@ -90,8 +106,7 @@ function createTreeMap(data, title, description) {
 
     // Give the data to this cluster layout:
     let root = d3.hierarchy(data).sum(d => getTileSum(d));
-    // console.log(data);
-    // console.log(root);
+    
     // Then d3.treemap computes the position of each element of the hierarchy
     d3
         .treemap()
@@ -100,7 +115,6 @@ function createTreeMap(data, title, description) {
         (root);
 
     // use this information to add rectangles:
-    // console.log(root.leaves());
     svg
         .selectAll("rect")
         .data(root.leaves())
@@ -134,7 +148,6 @@ function createTreeMap(data, title, description) {
             })
             .attr("class", "tile")
             .on("mouseover", (d, i) => {
-                console.log("mouseover");
                 let html = `<div>${d.data.category}:&nbsp${d.data.name} = ${d.data.value}</div>`;
                 let elem = document.getElementById("tooltip");
                 elem.innerHTML = html;
@@ -143,45 +156,12 @@ function createTreeMap(data, title, description) {
                 tooltip.attr("data-value", d.data.value);
             })
             .on("mouseout", (d, i) => { 
-                console.log("mouseout");
                 let elem = document.getElementById("tooltip");
                 elem.style.visibility = "hidden";
             })
             ;
-
-    // and to add the text labels
-    /*
-    let cell_x = 0;
-    let cell_y = 0;
-    svg
-        .selectAll("text")
-        .data(root.leaves())
-        .enter()
-            .append("text")
-            .attr("x", d => {
-                cell_x = d.x0 + 8;
-                return cell_x + "px";
-            })
-            .attr("y", d => {
-                cell_y = d.y0 + 16;
-                return cell_y + "px";
-            })
-            .attr("width", d=>(d.x1 - d.x0) - 16 + "px")
-            .attr("height", d=>(Math.abs(d.y0 - d.y1)) - 32 + "px")
-            .attr("text-anchor", "start")
-            .attr("font-size", "smaller")
-            .text((d, i) => d.data.name)
-            ;
-    */
-            /*
-        svg
-            .selectAll("text")
-            .call(wrap, 50)            
-            ;
-            */
         
-        let legend_height = (Object.keys(category_colors).length + 1) * 16;
-        console.log(Object.keys(category_colors).length);
+        let legend_height = (Math.ceil(((Object.keys(category_colors).length + 1) * 16) /legend_cols)) + 32;
         const legend = d3.selectAll("body")
             .append("svg")
             .attr("id", "legend")
@@ -194,14 +174,13 @@ function createTreeMap(data, title, description) {
             .data(Object.keys(category_colors))
             .enter()
             .append("rect")
-            .attr("x", "8px")
-            .attr("y", (d, i) => (i + 1) * 16 + 8 + "px")            
+            .attr("x", (d, i) => (i % legend_cols) * (w / legend_cols) + 8 + "px")
+            .attr("y", (d, i) => Math.floor(i / legend_cols) * 16 + 24 + "px")            
             .attr("width", "16px")
             .attr("height", "16px")
             .attr("class", "legend-item")
             .attr("fill", (d, i) => {
                 let r = category_colors[d].r
-                // return `rgb(${category_colors[d].r},${category_colors[d].g},${category_colors[d].b})`;
                 return `url(#svgGradient_${category_colors[d].r}_${category_colors[d].g}_${category_colors[d].b})`;
 
             })
@@ -212,9 +191,9 @@ function createTreeMap(data, title, description) {
             .data(Object.keys(category_colors))
             .enter()
             .append("text")
-            .attr("x", "32px")
-            .attr("y", (d, i) => (i + 2) * 16 + "px")
-            .attr("width", (d, i) => (w - 32) + "px")
+            .attr("x", (d, i) => (i % legend_cols) * (w / legend_cols) + 32 + "px")
+            .attr("y", (d, i) => (Math.floor(i / legend_cols) + 1) * 16 + 24 + "px")            
+            .attr("width", (d, i) => (Math.floor(w / legend_cols) - 32) + "px")
             .attr("height", "16px")
             .text((d, i) => d)            
             ;
@@ -230,56 +209,7 @@ function createTreeMap(data, title, description) {
 
 }
 
-function wrap(text, width) {
-    console.log(text);
-    text.each(() => {
-    let text = d3.select(this);
-    console.log(text.text());
-    let words = text.text().split(/\s+/).reverse();
-    console.log(words);
-    let word;
-    let line = [];
-    let lineNumber = 0;
-    let lineHeight = 1.1; // ems
-    let y = text.attr("y");
-    let dy = parseFloat(text.attr("dy"));
-    let tspan = text.text(null)
-    .append("tspan")
-    .attr("x", 0)
-    .attr("y", y)
-    .attr("dy", dy + "em");
-    while (word = words.pop()) {
-    line.push(word);
-    tspan.text(line.join(" "));
-    if (tspan.node().getComputedTextLength() > width) {
-        line.pop();
-        tspan.text(line.join(" "));
-        line = [word];
-        tspan = text
-        .append("tspan")
-        .attr("x", 0)
-        .attr("y", y)
-        .attr("dy", ++lineNumber * lineHeight + dy + "em")
-        .text(word);
-    }
-    }
-});
-}  
-
-function cleanUp() {
-    const elementIds = ["title", "description", "svg", "tooltip", "legend"];
-    let elem;    
-    for (let i = 0; i < elementIds.length; i++) {
-        elem = document.getElementById(elementIds[i]);
-        if ((elem !== undefined) && (elem !== null)) {
-            elem.parentElement.removeChild(elem);
-        }
-    }
-
-    category_colors = {};
-    color_idx = 0;
-}
-
+// Build a bunch of color gradients for the categories.
 function buildGradients(svg) {
     let color_keys = Object.keys(color_map);
     let defs = svg.append("defs");
@@ -309,6 +239,45 @@ function buildGradients(svg) {
     }
 }
 
+// Clean up any elements that will be recreated when we reload data.
+function cleanUp() {
+    const elementIds = ["title", "description", "graph", "tooltip", "legend"];
+    let elem;    
+    for (let i = 0; i < elementIds.length; i++) {
+        elem = document.getElementById(elementIds[i]);
+        if ((elem !== undefined) && (elem !== null)) {
+            elem.parentElement.removeChild(elem);
+        }
+    }
+
+    category_colors = {};
+    color_idx = 0;
+}
+
+// Create the datasource buttons.
+// (largely hard coded stuff).
+function createButtons() {
+    let body = document.getElementsByTagName("body")[0];
+    let div = document.createElement("div");
+    div.className = "buttons";
+    body.appendChild(div);
+    let btnVideoGames = document.createElement("button");
+    btnVideoGames.innerText = "Video Games";
+    btnVideoGames.onclick = onVideoGames;
+    div.appendChild(btnVideoGames);
+
+    let btnMovies = document.createElement("button");
+    btnMovies.innerText = "Movies";
+    btnMovies.onclick = onMovies;
+    div.appendChild(btnMovies);
+
+    let btnKickStarter = document.createElement("button");
+    btnKickStarter.innerText = "Kickstarter";
+    btnKickStarter.onclick = onKickStarter;
+    div.appendChild(btnKickStarter);
+}
+
+// Fetch a data file from a url then draw the treemap for that file.
 function loadFile(url) {
     cleanUp();
     fetch(url.url)
@@ -318,4 +287,21 @@ function loadFile(url) {
     });
 }
 
-loadFile(urls.videogame);
+// Load up the Kickstarter data
+function onKickStarter(e) {
+    loadFile(urls.kickstarter);
+}
+
+// Load up the Movies data
+function onMovies(e) {
+    loadFile(urls.movie);
+}
+
+// Load up the video game data
+function onVideoGames(e) {
+    loadFile(urls.videogame);
+}
+
+// Start up the page.
+createButtons();
+onVideoGames();;
