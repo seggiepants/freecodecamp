@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<title>Timestamp Microservice</title>
+		<link rel="stylesheet" href="/style.css">
+    <script type="text/javascript" src="/index.js"></script>
+	</head>
+	<body>
+		<h1>Timestamp Microservice.</h1>
+     <form id="frmTimestamp" action="javascript:onSubmit()">
+      <label for="dateString">Date :</label>
+      <input type="text" id="dateString" name="dateString">
+      <input type="submit" value="Submit">
+    </form> 
+    <div id="results">
+      <div>
+        <label for="unix">Unix: </label><span id="unix"></span>
+      </div>
+      <div>
+        <label for="utc">UTC: </label><span id="utc"></span>
+      </div>
+    </div>
+    <div id="resultsError">
+      <label for="error">ERROR: </label><span id="error">stuff</span>
+    </div>
+    <p>
+      Enter a date to see the UTC and Unix Epoc equivalents. If you don't enter a value you get the equivalents for the current date and time. Try to format the date correctly or you may get an error.
+    </p>
+	</body>
+</html>
