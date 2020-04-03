@@ -1,0 +1,12 @@
+{
+  "name": "timestamp_microservice",
+  "version": "0.0.1",
+  "description": "Free Code Camp API and microservices project #1 - Timestamp Microservice",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
