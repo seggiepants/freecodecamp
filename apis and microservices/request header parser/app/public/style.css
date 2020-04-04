@@ -1,0 +1,43 @@
+body {
+    background-color: #222;
+    color: #ddd;
+    text-align: center;
+    font-family: sans-serif;
+  }
+  
+  h1 {
+    font-size: 4em;
+  }
+  
+  input[type=text], label {
+    margin-bottom: 8px;
+  }
+  
+  #results {
+    text-align: left;
+    width: 30rem;
+    background-color: lightgray;
+    color: black;
+    display: none;
+    padding: 8px;
+    margin: 1rem;
+    border: inset;
+    overflow: auto;
+    /* visibility: hidden; */
+  }
+  
+  #errors {
+    padding: 8px;
+    margin: 1rem;
+    border: inset;
+    background-color: palegoldenrod;
+    color: darkred;
+    text-align: left;
+    width: 30rem;
+    display: none;
+    /*visibility: hidden; */
+  }
+  
+  #errors>#error {
+    color: black;
+  }
