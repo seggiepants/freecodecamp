@@ -9,15 +9,30 @@ app.use("/", express.static(__dirname + "/public"));
 
 app.get("/api/whoami", (req, res) => {  
   console.log(req.headers);
-  var results = "";
+  var results = {};
+
+  // Fill in the ordinary keys.
   var keys = Object.keys(req.headers);
   for (var i = 0; i < keys.length; i++) {
-      if (i > 0) {
-          results = results + ", ";
-      }
-      results = results + `"${keys[i]}": "${encodeURI(req.headers[keys[i]])}"`;
+      results[keys[i]] = req.headers[keys[i]];
   }
-  res.send("{" + results + "}");
+
+  // IP Address
+  if (!Object.hasOwnProperty("ipaddress")) {
+    results["ipaddress"] = req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  }
+
+  // Software == user-agent?
+  if (!Object.hasOwnProperty("software")) {
+    results["software"] = req.headers["user-agent"] || "unknown";
+  }
+
+  // Software == user-agent?
+  if (!Object.hasOwnProperty("language")) {
+    results["language"] = req.headers["accept-language"] || "unknown";
+  }
+
+  res.send(JSON.stringify(results));
 });
 
 app.get("/", (req, res) => res.sendFile(__dirname + "/views/index.html"));
