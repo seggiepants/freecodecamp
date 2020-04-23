@@ -29,18 +29,19 @@ app.get("/api/hello", function (req, res) {
 
 app.post("/api/exercise/new-user", (req, res) => {
   console.log('new user');
-    let username = decodeURIComponent(req.body.username);    
-    console.log(username);
-    User.findOneAndUpdate({username: username}, {username: username}, {new: true, upsert: true, useFindAndModify: false}, (error, data) => {
+  let username = decodeURIComponent(req.body.username);    
+  console.log(username);
+  User.findOneAndUpdate({username: username}, {$set: {username: username}}, {upsert: true, new: true}, (error, data) => {
+    console.log('result');
       if (error) {
         console.log(error);
         return res.json({error: error});
-      } else {
-        console.log(data);
-        return res.json({_id: data._id, username: data.username});
-      }
-    });
-  });
+      } 
+      console.log(data);
+      return res.json({_id: data._id, username: data.username});
+    }
+    );
+});
 
 app.get("/api/exercise/users/:username?", (req, res) => {
   let username = decodeURIComponent(req.body.username || '');
@@ -49,8 +50,8 @@ app.get("/api/exercise/users/:username?", (req, res) => {
   if (username !== null) {
     filter['username'] = username;
   }
-console.log('filter');
-console.log(filter);
+  console.log('filter');
+  console.log(filter);
   User.find(filter, (error, docs) => {
     console.log('callback');
     if (error) {
@@ -59,7 +60,7 @@ console.log(filter);
       return res.json({users: docs});
     }
   });
-})
+});
 
 // Not found middleware
 app.use((req, res, next) => {
