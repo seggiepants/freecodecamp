@@ -1,21 +1,21 @@
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
 require('dotenv').config(); // skip on glitch.
 const cors = require('cors');
 
+const app = express();
+app.use(bodyParser.urlencoded({extend: false}));
+app.use(cors());
+
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_URI);
-
-app.use(cors());
 
 var userSchema = new mongoose.Schema({
   username:  {type: String, required: true}, // String is shorthand for {type: String}
 });
 const User = mongoose.model('User', userSchema);
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 
 app.use(express.static('public'));
@@ -28,21 +28,44 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post("/api/exercise/new-user", (req, res) => {
-  console.log('new user');
-  let username = decodeURIComponent(req.body.username);    
-  console.log(username);
-  User.findOneAndUpdate({username: username}, {$set: {username: username}}, {upsert: true, new: true}, (error, data) => {
-    console.log('result');
+  let username = decodeURIComponent(req.body.username);  
+  console.log(`username: ${username}`);
+  //console.log(User);
+  User.findOne({'username': username}, function(error, data) {
+    // Why do we never get a response?
+      /*
       if (error) {
-        console.log(error);
-        return res.json({error: error});
-      } 
-      console.log(data);
-      return res.json({_id: data._id, username: data.username});
-    }
-    );
+        console.log(`findOne - error: ${error}`);
+        return res.json({'error': error});
+      }
+      */
+      /*
+      if (data) {
+        // We have some data
+        console.log(`findOne - existing - data: ${data}`);
+        return res.json({'error': 'username taken.'});
+      } else {
+        // New data
+        console.log(`findOne - new: ${data}`);
+        User({username: username}).save((error, data) => {
+          if (error) {
+            console.log(`save error: ${error}`);
+            return res.json({'error': error});
+          }
+          console.log(`save: ${data}`);
+          return res.json({'_id': data._id, 'username': data.username});
+        });
+      }
+      */
+     console.log('error:');
+     console.log(error);
+     console.log('data');
+     console.log(data);
+     return res.json({'message': 'got this far.'});
+  });
+  console.log('end of findone');
 });
-
+  
 app.get("/api/exercise/users/:username?", (req, res) => {
   let username = decodeURIComponent(req.body.username || '');
   let filter = {};
@@ -50,8 +73,8 @@ app.get("/api/exercise/users/:username?", (req, res) => {
   if (username !== null) {
     filter['username'] = username;
   }
-  console.log('filter');
-  console.log(filter);
+console.log('filter');
+console.log(filter);
   User.find(filter, (error, docs) => {
     console.log('callback');
     if (error) {
@@ -60,7 +83,7 @@ app.get("/api/exercise/users/:username?", (req, res) => {
       return res.json({users: docs});
     }
   });
-});
+})
 
 // Not found middleware
 app.use((req, res, next) => {
@@ -84,8 +107,9 @@ app.use((err, req, res, next) => {
   }
   res.status(errCode).type('txt')
     .send(errMessage);
-})
+});
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+
