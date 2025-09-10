@@ -125,7 +125,7 @@ class App extends React.Component {
   onClick(e) {
     let btn;
     // Did we get called by a keystroke or a button click.
-    if (e.hasOwnProperty("dispatchConfig")) {
+    if (e.type == "click") {
       // Button click
       if (this.buttons.hasOwnProperty(e.target.id)) {
         btn = this.buttons[e.target.id];
