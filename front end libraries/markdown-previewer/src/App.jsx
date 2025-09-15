@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import marked from 'marked';
+import { marked } from 'marked';
 import SplitterLayout from 'react-splitter-layout';
 import 'react-splitter-layout/lib/index.css';
 import DOMPurify from 'dompurify';

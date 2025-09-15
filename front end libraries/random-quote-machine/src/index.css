@@ -1,4 +1,4 @@
-@import '~bootstrap/dist/css/bootstrap.css';
+@import 'bootstrap/dist/css/bootstrap.css';
 
 body {
   margin: 8px;
@@ -99,6 +99,7 @@ http://nicolasgallagher.com/pure-css-speech-bubbles/demo/
   margin: 8px 16px;
   background-color: #000000A0;
   color: white;
+  display: inline-block;
 }
 
 #app-title>h1 {
@@ -109,6 +110,11 @@ http://nicolasgallagher.com/pure-css-speech-bubbles/demo/
 
 .red-dwarf-logo {
   height: 5rem;
+}
+
+.quote-button {
+	width: auto;
+	align-self: baseline;
 }
 
 @media screen and (min-width: 720px) {

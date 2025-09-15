@@ -20,12 +20,13 @@ class App extends React.Component {
     .then(json => {
       const newState = Object.assign({}, { author: this.state.author, text: this.state.text, image: this.state.image}, json);
       this.setState(newState);
-      this.randomQuote();
+      this.nextQuote(newState);
+	  //console.log(newState);
+	  //console.log(this.state);
     })
   } 
 
   randomQuote() {
-    console.log(this);
     const oldAuthor = this.state.author;
     const oldText = this.state.text;
     
@@ -38,24 +39,45 @@ class App extends React.Component {
       } while (quote.author === oldAuthor || quote.text === oldText);
 
       let newState = Object.assign({}, {author: quote.author, text: quote.text, image: quote.image}, this.state.quotes );
-      console.log(newState);
+      this.setState(newState);
+    }
+  }
+  
+  nextQuote(pendingState)
+  {
+	const oldAuthor = this.state.author;
+    const oldText = this.state.text;
+    
+    if (pendingState.quotes.length > 0) {
+      let index;
+      let quote;
+      do {
+        index = Math.floor(Math.random() * pendingState.quotes.length);      
+        quote = pendingState.quotes[index];
+      } while (quote.author === oldAuthor || quote.text === oldText);
+
+      let newState = Object.assign({}, {author: quote.author, text: quote.text, image: quote.image}, pendingState.quotes );
       this.setState(newState);
     }
   }
 
   tweetQuote() {
-    const url = `https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text="${encodeURIComponent(this.state.text)}" ${encodeURIComponent(this.state.author)}`;
+    const url = `https://x.com/intent/tweet?hashtags=quotes&related=freecodecamp&text="${encodeURIComponent(this.state.text)}" ${encodeURIComponent(this.state.author)}`;
     window.open(url);
   }
 
   render () {
-    const twitter_url = "https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text="
+    const twitter_url = "https://x.com/intent/tweet?hashtags=quotes&related=freecodecamp&text="
+	if (this.state.text == "loading..." && this.state.quotes.length > 0)
+	{
+		this.randomQuote();
+	}
     return (
       <div>
         <div id="quote-box">
           <div className="row">
-          <img alt="" src="img/logo.svg" className = "red-dwarf-logo" /><span id="app-title"><h1>Red Dwarf Quote Machine</h1></span>
-          <img alt="" src="img/logo.svg" className = "red-dwarf-logo" />
+          <span><img alt="" src="img/logo.svg" className = "red-dwarf-logo" /><span id="app-title"><h1>Red Dwarf Quote Machine</h1></span>
+          <img alt="" src="img/logo.svg" className = "red-dwarf-logo" /></span>
           </div>
           <div id="text" className="row">
             {this.state.text}
@@ -67,8 +89,8 @@ class App extends React.Component {
               {this.state.author}
           </div>
           <div id="nav-frame" className="row">
-            <button id="new-quote" onClick={this.randomQuote} className="btn btn-primary">New Quote</button>
-            <a href={twitter_url + encodeURIComponent("\"" + this.state.text + "\" " + this.state.author)} id="tweet-quote" className="btn btn-info "><i className="fa fa-twitter"></i>Twitter</a>
+            <button id="new-quote" onClick={this.randomQuote} className="btn btn-primary quote-button">New Quote</button>
+            <a href={twitter_url + encodeURIComponent("\"" + this.state.text + "\" " + this.state.author)} id="tweet-quote" className="btn btn-info quote-button"><i className="fa fa-twitter"></i>Twitter</a>
           </div>
         </div>
       </div>
