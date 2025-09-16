@@ -1,4 +1,6 @@
 /front end libraries/drum-machine/public/audio/raw
 raw
 dist
+.env
+node_modules
 /data visualization/bar chart/data

@@ -46,24 +46,32 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get("/api/shorturl/:id?", (req, res) => {
+app.get("/api/shorturl/:id", (req, res) => {
   // Check to see if the id exists, if so, return the associated url.  
   if (req.params.id === null) {    
     return done('did not receive a url to lookup.');
-  } else if (!isNaN(req.params.id)) {
-    Shortener.findById(parseInt(req.params.id), (error, data) => {
-      if (error) return Promise.reject(error);
-      res.status(301);
-      let url = data.url;
-      if (url.search('://') == -1) {
-        url = 'http://' + url;
-      }
-      res.redirect(url);
-    });
+  } 
+  else if (!isNaN(req.params.id)) 
+  {
+	try
+	{
+		Shortener.findById(parseInt(req.params.id)).then((data) => {
+			res.status(301);
+			let url = data.url;
+			if (url.search('://') == -1) {
+				url = 'http://' + url;
+			}
+			res.redirect(url);
+		});
+    }
+	catch(error)
+	{
+		return Promise.reject(error);
+	}
   } else {
     return res.json({error: "Unable to parse."});
   }
-}).post("/api/shorturl/:id?", (req, res) => {
+}).post("/api/shorturl/:id", (req, res) => {
   if (req.params.id == 'new') {
     let newURL = decodeURIComponent(req.body.url);
     let url = new URL(newURL);
@@ -75,13 +83,19 @@ app.get("/api/shorturl/:id?", (req, res) => {
             _id: newCounter
             , url: newURL
           });
-          shortURL.save((error, data) => {
-            if (error) return res.json({error: error});
+		  try
+		  {
+          shortURL.save().then((data) => {            
             res.json({
             original_url: newURL
             ,short_url: root_url + 'api/shorturl/' + newCounter
             });
           });
+		  }
+		  catch(error)
+		  {
+			  return res.json({error: error});
+		  }
         }
       )} else {
         res.json({error: err});
@@ -95,12 +109,12 @@ app.listen(port, () => {
 });
 
 async function GetNextSequenceValue(sequenceName){
-  return Counter.findOneAndUpdate({_id: sequenceName}, {$inc:{sequence_value:1}}, {new: true, upsert: true, useFindAndModify: false}, (error, data) => {
+  return Counter.findOneAndUpdate({_id: sequenceName}, {$inc:{sequence_value:1}}, {new: true, upsert: true, useFindAndModify: false}); /*.then((error, data) => {
     if (error) 
       return Promise.reject({error: error});
     else
       return Promise.resolve(data);
-  })
+  })*/
 }
 
 
